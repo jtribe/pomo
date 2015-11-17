@@ -1,0 +1,17 @@
+{
+  "name": "PomoTimer",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "react-native start",
+    "test": "mocha --compilers js:babel-core/register"
+  },
+  "dependencies": {
+    "react-native": "^0.14.2",
+    "rx": "^4.0.7"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.3"
+  }
+}
