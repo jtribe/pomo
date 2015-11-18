@@ -11,14 +11,14 @@ var {
   Text,
   View,
 } = React;
-var state = require('./src/state');
+var props = require('./src/props');
 var {
-  Room
+  App
 } = require('./src/components');
 
 var PomoTimer = React.createClass({
   render() {
-    return <Room room={state.room} users={state.users} />;
+    return <App props={props} />;
   }
 });
 

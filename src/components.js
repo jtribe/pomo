@@ -1,25 +1,51 @@
-var React = require('react-native');
-var {
+let React = require('react-native');
+let {
   StyleSheet,
   Text,
   View,
 } = React;
+let TimerModel = require('./models/timer');
 
-exports.Room = React.createClass({
+exports.App = React.createClass({
   render() {
-    var timers = this.props.users.map(user => <Timer user=/>)
+    let props = this.props.props;
+    return <Room room={props.room} users={props.users} />;
+  }
+});
+
+let Room = React.createClass({
+  render() {
+    let users = this.props.users.map(user => <User user={user} key={user.id} />)
     return (
       <View style={styles.container}>
         <Text style={styles.title}>
           {this.props.room.name}
         </Text>
-        {timers}
+        {users}
       </View>
     )
   }
 });
 
-var styles = StyleSheet.create({
+let User = React.createClass({
+  componentDidMount: function() {
+    this.interval = setInterval(() => this.setState(), 1000);
+  },
+  render() {
+    let timer = new TimerModel(this.props.user.timer);
+    return (
+      <View>
+        <Text>{this.props.user.name}</Text>
+        <Text>{timer.minutesSeconds}</Text>
+      </View>
+    )
+  },
+  componentWillUnmount: function() {
+    clearInterval(this.interval);
+  },
+});
+
+let styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
