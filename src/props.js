@@ -9,7 +9,7 @@ module.exports = {
       timer: {
         isRunning: true,
         lastStarted: new Date(Date.now()),
-        elapsedBeforeStop: 0,
+        stoppedAt: 600000,
       }
     },
     {

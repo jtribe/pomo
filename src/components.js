@@ -3,6 +3,8 @@ let {
   StyleSheet,
   Text,
   View,
+  Dimensions,
+  PixelRatio
 } = React;
 let TimerModel = require('./models/timer');
 
@@ -29,14 +31,17 @@ let Room = React.createClass({
 
 let User = React.createClass({
   componentDidMount: function() {
-    this.interval = setInterval(() => this.setState(), 1000);
+    this.interval = setInterval(() => this.forceUpdate(), 1000);
   },
   render() {
     let timer = new TimerModel(this.props.user.timer);
     return (
-      <View>
-        <Text>{this.props.user.name}</Text>
-        <Text>{timer.minutesSeconds}</Text>
+      <View style={styles.user}>
+        <View style={styles.details}>
+          <Text style={styles.name}>{this.props.user.name}</Text>
+          <Text style={styles.remaining}>{timer.minutesSeconds}</Text>
+        </View>
+        <ProgressIndicator elapsed={timer.elapsed} duration={timer.duration} />
       </View>
     )
   },
@@ -45,22 +50,40 @@ let User = React.createClass({
   },
 });
 
+let ProgressIndicator = React.createClass({
+  render() {
+    let {elapsed, duration} = this.props;
+    let width = Dimensions.get('window').width * (elapsed / duration);
+    return (
+      <View style={styles.outer}>
+        <View style={[styles.inner, {width: width}]} />
+      </View>
+    );
+  }
+});
+
 let styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
   title: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
+  user: {
     marginBottom: 5,
   },
+  details: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 5,
+    marginBottom: 5,
+  },
+  outer: {
+    borderBottomWidth: 1 / PixelRatio.get(),
+    borderColor: '#ccc',
+  },
+  inner: {
+    backgroundColor: 'red',
+    height: 2
+  },
 });
-
