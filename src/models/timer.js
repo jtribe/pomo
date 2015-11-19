@@ -33,6 +33,9 @@ class Timer {
     let seconds = pad(Math.floor((remaining / 1000) % 60), 2).slice(0, 2);
     return mins + ":" + seconds;
   }
+  get isFinished() {
+    return this.remaining <= 0;
+  }
   start() {
     if (!this.lastStarted) {
       this.lastStarted = new Date();
@@ -41,7 +44,7 @@ class Timer {
   }
   stop() {
     if (this.lastStarted) {
-      this.stoppedAt = Date.now() - this.lastStarted.getTime();
+      this.stoppedAt += Date.now() - this.lastStarted.getTime();
     }
     this.lastStarted = null;
     this.isRunning = false;

@@ -4,20 +4,22 @@ let {
   Text,
   View,
   Dimensions,
-  PixelRatio
+  PixelRatio,
+  TouchableHighlight,
 } = React;
 let TimerModel = require('./models/timer');
 
-exports.App = React.createClass({
+exports.App = class App extends React.Component {
   render() {
-    let props = this.props.props;
-    return <Room room={props.room} users={props.users} />;
+    return <Room room={this.props.room} users={this.props.users} />;
   }
-});
+};
 
-let Room = React.createClass({
+class Room extends React.Component {
   render() {
-    let users = this.props.users.map(user => <User user={user} key={user.id} />)
+    let users = this.props.users.map(
+      user => <User user={user} key={user.id} />
+    );
     return (
       <View style={styles.container}>
         <Text style={styles.title}>
@@ -27,43 +29,84 @@ let Room = React.createClass({
       </View>
     )
   }
-});
+}
 
-let User = React.createClass({
-  componentDidMount: function() {
-    this.interval = setInterval(() => this.forceUpdate(), 1000);
-  },
+class User extends React.Component {
+  constructor() {
+    super();
+    PeriodicUpdate(1000, this, this.tick);
+  }
+  tick() {
+    var {timer} = this.state;
+    if (timer.isFinished) {
+      timer.stop();
+    }
+  }
+  componentWillMount(props) {
+    this.setState({timer: new TimerModel(this.props.user.timer)});
+  }
   render() {
-    let timer = new TimerModel(this.props.user.timer);
+    var timer = this.state.timer;
     return (
       <View style={styles.user}>
         <View style={styles.details}>
-          <Text style={styles.name}>{this.props.user.name}</Text>
-          <Text style={styles.remaining}>{timer.minutesSeconds}</Text>
+          <Text>{this.props.user.name}</Text>
+          <TouchableHighlight onPress={() => this.toggleTimer()}>
+            <Text>{timer.minutesSeconds}</Text>
+          </TouchableHighlight>
         </View>
-        <ProgressIndicator elapsed={timer.elapsed} duration={timer.duration} />
+        <ProgressIndicator timer={timer} />
       </View>
     )
-  },
-  componentWillUnmount: function() {
-    clearInterval(this.interval);
-  },
-});
+  }
+  toggleTimer() {
+    var timer = this.state.timer;
+    if (timer.isFinished) {
+      timer.reset();
+    }
+    timer.isRunning ? timer.stop() : timer.start();
+    this.forceUpdate();
+  }
+}
 
-let ProgressIndicator = React.createClass({
+class ProgressIndicator extends React.Component {
+  constructor() {
+    super();
+    PeriodicUpdate(17, this);
+  }
   render() {
-    let {elapsed, duration} = this.props;
-    let width = Dimensions.get('window').width * (elapsed / duration);
+    var {timer} = this.props;
+    let width = Dimensions.get('window').width * (timer.elapsed / timer.duration);
     return (
       <View style={styles.outer}>
-        <View style={[styles.inner, {width: width}]} />
+        <View style={[styles.inner, timer.isRunning && styles.running, {width: width}]} />
       </View>
     );
   }
-});
+}
+
+let PeriodicUpdate = function(interval, target, tick) {
+  var intervalId;
+  Object.assign(target, {
+    componentDidMount() {
+      intervalId = setInterval(() => this._tick(), interval);
+    },
+    _tick() {
+      tick && tick.call(target);
+      this.forceUpdate();
+    },
+    componentWillUnmount() {
+      clearInterval(intervalId);
+    },
+  });
+};
 
 let styles = StyleSheet.create({
+  container: {
+    marginTop: 20,
+  },
   title: {
+    fontWeight: 'bold',
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
@@ -78,12 +121,19 @@ let styles = StyleSheet.create({
     paddingHorizontal: 5,
     marginBottom: 5,
   },
+  debug: {
+    borderWidth: 1,
+    borderColor: 'red'
+  },
   outer: {
     borderBottomWidth: 1 / PixelRatio.get(),
     borderColor: '#ccc',
   },
   inner: {
-    backgroundColor: 'red',
+    backgroundColor: '#ccc',
     height: 2
   },
+  running: {
+    backgroundColor: 'red',
+  }
 });

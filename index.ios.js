@@ -5,21 +5,13 @@
 'use strict';
 
 var React = require('react-native');
-var {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-} = React;
 var props = require('./src/props');
 var {
   App
 } = require('./src/components');
 
-var PomoTimer = React.createClass({
+React.AppRegistry.registerComponent('PomoTimer', () => class extends React.Component {
   render() {
-    return <App props={props} />;
+    return <App {...props} />;
   }
 });
-
-AppRegistry.registerComponent('PomoTimer', () => PomoTimer);

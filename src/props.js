@@ -9,13 +9,16 @@ module.exports = {
       timer: {
         isRunning: true,
         lastStarted: new Date(Date.now()),
-        stoppedAt: 600000,
+        stoppedAt: 55000,
+        duration: 60000,
       }
     },
     {
       id: 2,
       name: 'Mark',
-      timer: {}
+      timer: {
+        duration: 60000,
+      }
     }
   ]
 };
