@@ -31,20 +31,31 @@ class Room extends React.Component {
   }
 }
 
-class User extends React.Component {
-  constructor() {
-    super();
-    PeriodicUpdate(1000, this, this.tick);
+let SetIntervalMixin = {
+  componentWillMount: function() {
+    this.intervals = [];
+  },
+  setInterval: function() {
+    this.intervals.push(setInterval.apply(null, arguments));
+  },
+  componentWillUnmount: function() {
+    this.intervals.forEach(clearInterval);
   }
+};
+
+let User = React.createClass({
+  mixins: [SetIntervalMixin],
+  componentWillMount() {
+    this.setState({timer: new TimerModel(this.props.user.timer)});
+    this.setInterval(() => this.tick(), 17);
+  },
   tick() {
     var {timer} = this.state;
     if (timer.isFinished) {
       timer.stop();
     }
-  }
-  componentWillMount(props) {
-    this.setState({timer: new TimerModel(this.props.user.timer)});
-  }
+    this.forceUpdate()
+  },
   render() {
     var timer = this.state.timer;
     return (
@@ -58,7 +69,7 @@ class User extends React.Component {
         <ProgressIndicator timer={timer} />
       </View>
     )
-  }
+  },
   toggleTimer() {
     var timer = this.state.timer;
     if (timer.isFinished) {
@@ -67,13 +78,13 @@ class User extends React.Component {
     timer.isRunning ? timer.stop() : timer.start();
     this.forceUpdate();
   }
-}
+});
 
-class ProgressIndicator extends React.Component {
-  constructor() {
-    super();
-    PeriodicUpdate(17, this);
-  }
+let ProgressIndicator = React.createClass({
+  mixins: [SetIntervalMixin],
+  componentDidMount() {
+    this.setInterval(() => this.forceUpdate(), 17);
+  },
   render() {
     var {timer} = this.props;
     let width = Dimensions.get('window').width * (timer.elapsed / timer.duration);
@@ -83,7 +94,7 @@ class ProgressIndicator extends React.Component {
       </View>
     );
   }
-}
+});
 
 let PeriodicUpdate = function(interval, target, tick) {
   var intervalId;
