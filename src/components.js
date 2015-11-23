@@ -8,10 +8,16 @@ let {
   TouchableHighlight,
 } = React;
 let TimerModel = require('./models/timer');
+let TimerMixin = require('react-timer-mixin');
+let Circle = require('./circle');
+let TimerToggle = require('./mixins');
 
 exports.App = class App extends React.Component {
   render() {
-    return <Room room={this.props.room} users={this.props.users} />;
+    var timer = new TimerModel({duration: 10000});
+    timer.start();
+    return <Circle timer={timer} />;
+    //return <Room room={this.props.room} users={this.props.users} />;
   }
 };
 
@@ -31,20 +37,8 @@ class Room extends React.Component {
   }
 }
 
-let SetIntervalMixin = {
-  componentWillMount: function() {
-    this.intervals = [];
-  },
-  setInterval: function() {
-    this.intervals.push(setInterval.apply(null, arguments));
-  },
-  componentWillUnmount: function() {
-    this.intervals.forEach(clearInterval);
-  }
-};
-
 let User = React.createClass({
-  mixins: [SetIntervalMixin],
+  mixins: [TimerMixin, TimerToggle],
   componentWillMount() {
     this.setState({timer: new TimerModel(this.props.user.timer)});
     this.setInterval(() => this.tick(), 17);
@@ -70,18 +64,10 @@ let User = React.createClass({
       </View>
     )
   },
-  toggleTimer() {
-    var timer = this.state.timer;
-    if (timer.isFinished) {
-      timer.reset();
-    }
-    timer.isRunning ? timer.stop() : timer.start();
-    this.forceUpdate();
-  }
 });
 
 let ProgressIndicator = React.createClass({
-  mixins: [SetIntervalMixin],
+  mixins: [TimerMixin],
   componentDidMount() {
     this.setInterval(() => this.forceUpdate(), 17);
   },
@@ -96,22 +82,8 @@ let ProgressIndicator = React.createClass({
   }
 });
 
-let PeriodicUpdate = function(interval, target, tick) {
-  var intervalId;
-  Object.assign(target, {
-    componentDidMount() {
-      intervalId = setInterval(() => this._tick(), interval);
-    },
-    _tick() {
-      tick && tick.call(target);
-      this.forceUpdate();
-    },
-    componentWillUnmount() {
-      clearInterval(intervalId);
-    },
-  });
-};
 
+let onePx = 1 / PixelRatio.get();
 let styles = StyleSheet.create({
   container: {
     marginTop: 20,
@@ -137,12 +109,13 @@ let styles = StyleSheet.create({
     borderColor: 'red'
   },
   outer: {
-    borderBottomWidth: 1 / PixelRatio.get(),
+    borderBottomWidth: onePx,
     borderColor: '#ccc',
   },
   inner: {
     backgroundColor: '#ccc',
-    height: 2
+    height: 2,
+    marginBottom: 0 - onePx,
   },
   running: {
     backgroundColor: 'red',
