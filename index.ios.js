@@ -4,14 +4,13 @@
  */
 'use strict';
 
-var React = require('react-native');
-var props = require('./src/props');
-var {
+import React from 'react-native';
+import {
   App
-} = require('./src/components');
+} from './src/components';
 
 React.AppRegistry.registerComponent('PomoTimer', () => class extends React.Component {
   render() {
-    return <App {...props} />;
+    return <App />;
   }
 });

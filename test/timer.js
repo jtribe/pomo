@@ -63,9 +63,10 @@ describe('Timer model', () => {
       })
       .toPromise();
   });
-  it('provides a minutesSeconds property', () => {
+  it.only('provides a minutesSeconds property', () => {
     var checks = {
       0: '25:00',
+      100: '25:00',
       1000: '24:59',
       59000: '24:01',
       60000: '24:00',

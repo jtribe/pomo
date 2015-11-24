@@ -1,4 +1,4 @@
-exports.TimerToggle = {
+export var TimerToggle = {
   toggleTimer() {
     var timer = this.state.timer;
     if (timer.isFinished) {

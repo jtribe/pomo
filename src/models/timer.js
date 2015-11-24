@@ -29,9 +29,13 @@ class Timer {
   }
   get minutesSeconds() {
     let remaining = this.remaining;
-    let mins = pad(Math.floor(remaining / 60000), 2);
-    let seconds = pad(Math.floor((remaining / 1000) % 60), 2).slice(0, 2);
-    return mins + ":" + seconds;
+    let mins = Math.floor(remaining / 60000);
+    let seconds = Math.ceil(remaining / 1000 % 60);
+    if (seconds == 60) {
+      mins++;
+      seconds = 0;
+    }
+    return pad(mins, 2) + ":" + pad(seconds, 2).slice(0, 2);
   }
   get isFinished() {
     return this.remaining <= 0;

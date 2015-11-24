@@ -1,4 +1,12 @@
-let React = require('react-native');
+import React from 'react-native';
+import TimerModel from './models/timer';
+import TimerMixin from 'react-timer-mixin';
+import Circle from './circle';
+import {
+  TimerToggle
+} from './mixins';
+import props from './props';
+
 let {
   StyleSheet,
   Text,
@@ -7,18 +15,17 @@ let {
   PixelRatio,
   TouchableHighlight,
 } = React;
-let TimerModel = require('./models/timer');
-let TimerMixin = require('react-timer-mixin');
-let Circle = require('./circle');
-let TimerToggle = require('./mixins');
 
 exports.App = class App extends React.Component {
+  componentWillMount() {
+    this.setState(props);
+  }
   render() {
     var timer = new TimerModel({duration: 10000});
     timer.start();
     return <Circle timer={timer} />;
-    //return <Room room={this.props.room} users={this.props.users} />;
-  }
+    //return <Room room={this.state.room} users={this.state.users} />;
+  }’
 };
 
 class Room extends React.Component {
@@ -41,12 +48,11 @@ let User = React.createClass({
   mixins: [TimerMixin, TimerToggle],
   componentWillMount() {
     this.setState({timer: new TimerModel(this.props.user.timer)});
-    this.setInterval(() => this.tick(), 17);
+    this.setInterval(() => this.tick(), 1000);
   },
   tick() {
-    var {timer} = this.state;
-    if (timer.isFinished) {
-      timer.stop();
+    if (this.state.isFinished) {
+      this.state.timer.stop();
     }
     this.forceUpdate()
   },
@@ -69,7 +75,11 @@ let User = React.createClass({
 let ProgressIndicator = React.createClass({
   mixins: [TimerMixin],
   componentDidMount() {
-    this.setInterval(() => this.forceUpdate(), 17);
+    let tick = () => {
+      this.forceUpdate();
+      this.requestAnimationFrame(tick);
+    };
+    tick();
   },
   render() {
     var {timer} = this.props;
