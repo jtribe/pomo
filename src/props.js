@@ -10,14 +10,16 @@ module.exports = {
         isRunning: true,
         lastStarted: new Date(Date.now()),
         stoppedAt: 55000,
-        duration: 60000,
+        duration: 50000,
+        restDuration: 10000,
       }
     },
     {
       id: 2,
       name: 'Mark',
       timer: {
-        duration: 60000,
+        duration: 50000,
+        restDuration: 10000,
       }
     }
   ]

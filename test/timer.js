@@ -1,9 +1,9 @@
-var Timer = require('../src/models/timer');
-var expect = require('chai').expect;
-var Rx = require('rx');
+import Timer from '../src/models/timer';
+import {expect} from 'chai';
+import Rx from 'rx';
 
 var timer;
-var delay = 100;
+let delay = 100;
 describe('Timer model', () => {
   beforeEach(() => {
     timer = new Timer();
@@ -12,7 +12,7 @@ describe('Timer model', () => {
   it('is initially stopped', () => {
     expect(timer.isRunning).to.equal(false);
     expect(timer.elapsed).to.equal(0);
-    expect(timer.remaining).to.equal(25 * 60000);
+    expect(timer.remaining).to.equal(timer.duration);
   });
   it('can be started', () => {
     timer.start();
@@ -20,7 +20,7 @@ describe('Timer model', () => {
     return wait()
       .do(() => {
         expect(timer.elapsed).to.be.at.least(delay);
-        expect(timer.remaining).to.lessThan(Timer.defaultDuration);
+        expect(timer.remaining).to.lessThan(timer.duration);
       })
       .toPromise();
   });
@@ -63,7 +63,7 @@ describe('Timer model', () => {
       })
       .toPromise();
   });
-  it.only('provides a minutesSeconds property', () => {
+  it('provides a minutesSeconds property', () => {
     var checks = {
       0: '25:00',
       100: '25:00',
@@ -76,7 +76,7 @@ describe('Timer model', () => {
     };
     Object.keys(checks).forEach(millis => {
       timer.elapsed = millis;
-      expect(timer.minutesSeconds).to.equal(checks[millis]);
+      expect(timer.minutesSeconds).to.equal(checks[millis], `for ${millis}m`);
     });
   });
 });

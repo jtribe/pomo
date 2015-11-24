@@ -1,5 +1,5 @@
 import React from 'react-native';
-import TimerModel from './models/timer';
+import PomoTimer from './models/pomo-timer';
 import TimerMixin from 'react-timer-mixin';
 import Circle from './circle';
 import {
@@ -21,11 +21,16 @@ exports.App = class App extends React.Component {
     this.setState(props);
   }
   render() {
-    var timer = new TimerModel({duration: 10000});
+    var timer = new PomoTimer({
+      duration: 6000,
+      restDuration: 2000,
+    });
     timer.start();
     return <Circle timer={timer} />;
-    //return <Room room={this.state.room} users={this.state.users} />;
-  }’
+  }
+  //render() {
+  //  return <Room room={this.state.room} users={this.state.users} />;
+  //}
 };
 
 class Room extends React.Component {
@@ -47,7 +52,7 @@ class Room extends React.Component {
 let User = React.createClass({
   mixins: [TimerMixin, TimerToggle],
   componentWillMount() {
-    this.setState({timer: new TimerModel(this.props.user.timer)});
+    this.setState({timer: new PomoTimer(this.props.user.timer)});
     this.setInterval(() => this.tick(), 1000);
   },
   tick() {

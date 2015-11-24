@@ -16,14 +16,6 @@ let {
 
 export default React.createClass({
   mixins: [TimerMixin, TimerToggle],
-  componentWillMount() {
-    let tick = () => {
-      this.forceUpdate();
-      this.requestAnimationFrame(tick);
-    };
-    tick();
-    this.setState({timer: this.props.timer});
-  },
   getInitialState() {
     let radius = 100;
     return {
@@ -32,15 +24,25 @@ export default React.createClass({
       timer: null
     }
   },
+  componentWillMount() {
+    let tick = () => {
+      this.forceUpdate();
+      this.requestAnimationFrame(tick);
+    };
+    tick();
+    this.props.timer.timer.elapsed = this.props.timer.pomoDuration;
+    this.setState({timer: this.props.timer});
+  },
   render() {
     let state = this.state;
-    let timer = state.timer;
+    let timer = state.timer.currentTimer;
     let progress = timer.elapsed / timer.duration;
     let radius = state.radius - this.state.strokeWidth;
     let diameter = state.radius * 2;
     let center = {x: state.radius, y: state.radius};
     let circlePath = circle(center, radius);
     let arcPath = arc(center, radius, 0, progress * 360);
+    let arcColor = state.timer.isResting ? '#9E9E9E' : '#FFEB3B';
 
     return (
       <View style={styles.view}>
@@ -48,10 +50,10 @@ export default React.createClass({
           <View style={[{width: diameter}, styles.timer]}>
             <Surface width={diameter} height={diameter} style={styles.circle}>
               <Shape d={circlePath} stroke="#666" strokeWidth={state.strokeWidth} />
-              <Shape d={arcPath} stroke="#FFEB3B" strokeWidth={state.strokeWidth} />
+              <Shape d={arcPath} stroke={arcColor} strokeWidth={state.strokeWidth} />
             </Surface>
             <Text height="100%" style={styles.text}>
-              {timer.isFinished ? 'Rest' : timer.minutesSeconds}
+              {timer.minutesSeconds}
             </Text>
           </View>
         </TouchableHighlight>

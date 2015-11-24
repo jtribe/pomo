@@ -1,25 +1,24 @@
-'use strict';
-var util = require('util');
+import util from 'util';
 
-class Timer {
+export default class Timer {
 
-  constructor(props) {
+  constructor(props = null) {
     this.duration = Timer.defaultDuration;
     this.isRunning = false;
     this.lastStarted = null;
-    this.stoppedAt = 0;
+    this.stoppedAt = null;
     Object.assign(this, props || {});
   }
   get elapsed() {
     if (!this.isRunning || this.lastStarted == null) {
-      return this.stoppedAt;
+      return this.stoppedAtTime || 0;
     }
     else {
-      return this.stoppedAt + Date.now() - this.lastStarted.getTime();
+      return this.stoppedAtTime + Date.now() - this.lastStarted.getTime();
     }
   }
   set elapsed(millis) {
-    this.stoppedAt = millis;
+    this.stoppedAt = new Date(millis);
     if (this.isRunning) {
       this.lastStarted = new Date();
     }
@@ -40,27 +39,37 @@ class Timer {
   get isFinished() {
     return this.remaining <= 0;
   }
-  start() {
+  get stoppedAtTime() {
+    return this.stoppedAt ? this.stoppedAt.getTime() : null;
+  }
+  start(reset = false) {
+    if (reset) {
+      this.reset();
+    }
     if (!this.lastStarted) {
       this.lastStarted = new Date();
     }
     this.isRunning = true
   }
-  stop() {
-    if (this.lastStarted) {
-      this.stoppedAt += Date.now() - this.lastStarted.getTime();
+  stop(reset = false) {
+    if (reset) {
+      this.reset();
+    }
+    else if (this.lastStarted) {
+      this.stoppedAt = new Date(
+        this.stoppedAtTime + Date.now() - this.lastStarted.getTime()
+      );
     }
     this.lastStarted = null;
     this.isRunning = false;
   }
   reset() {
     this.stop();
-    this.stoppedAt = 0;
+    this.stoppedAt = null;
   }
 }
 
 Timer.defaultDuration = 25 * 60000;
-module.exports = Timer;
 
 function pad(str, width, padStr = 0) {
   str = String(str);
