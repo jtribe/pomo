@@ -4,6 +4,7 @@ import Rx from 'rx';
 
 var timer;
 let delay = 100;
+
 describe('Timer model', () => {
   beforeEach(() => {
     timer = new Timer();
@@ -17,24 +18,25 @@ describe('Timer model', () => {
   it('can be started', () => {
     timer.start();
     expect(timer.isRunning).to.equal(true);
-    return wait()
+    return wait(1)
       .do(() => {
-        expect(timer.elapsed).to.be.at.least(delay);
+        expect(timer.elapsed).to.be.at.least(1);
         expect(timer.remaining).to.lessThan(timer.duration);
       })
       .toPromise();
   });
   it('can be stopped', () => {
     timer.start();
-    return wait()
+    timer.stop();
+    expect(timer.isRunning).to.equal(false);
+    timer.elapsed = delay;
+    return wait(1)
       .do(() => {
-        timer.stop();
-        expect(timer.isRunning).to.equal(false);
-        expect(timer.elapsed).to.be.at.least(delay);
+        expect(timer.elapsed).to.equal(delay);
       })
       .toPromise();
   });
-  it('can be re-started', () => {
+  it('can be started, stopped and re-started', () => {
     timer.start();
     return wait()
       .flatMap(() => {
@@ -55,13 +57,10 @@ describe('Timer model', () => {
   });
   it('can be reset', () => {
     timer.start();
-    return wait()
-      .do(() => {
-        expect(timer.elapsed).to.be.at.least(delay);
-        timer.reset();
-        expect(timer.elapsed).to.equal(0);
-      })
-      .toPromise();
+    timer.elapsed = delay;
+    timer.reset();
+    expect(timer.isRunning).to.equal(false);
+    expect(timer.elapsed).to.equal(0);
   });
   it('provides a minutesSeconds property', () => {
     var checks = {
@@ -76,7 +75,7 @@ describe('Timer model', () => {
     };
     Object.keys(checks).forEach(millis => {
       timer.elapsed = millis;
-      expect(timer.minutesSeconds).to.equal(checks[millis], `for ${millis}m`);
+      expect(timer.minutesSeconds).to.equal(checks[millis], `for ${millis}ms`);
     });
   });
 });

@@ -20,17 +20,17 @@ exports.App = class App extends React.Component {
   componentWillMount() {
     this.setState(props);
   }
-  render() {
-    var timer = new PomoTimer({
-      duration: 6000,
-      restDuration: 2000,
-    });
-    timer.start();
-    return <Circle timer={timer} />;
-  }
   //render() {
-  //  return <Room room={this.state.room} users={this.state.users} />;
+  //  var timer = new PomoTimer({
+  //    duration: 6000,
+  //    restDuration: 2000,
+  //  });
+  //  timer.start();
+  //  return <Circle timer={timer} />;
   //}
+  render() {
+    return <Room room={this.state.room} users={this.state.users} />;
+  }
 };
 
 class Room extends React.Component {
@@ -62,7 +62,7 @@ let User = React.createClass({
     this.forceUpdate()
   },
   render() {
-    var timer = this.state.timer;
+    var timer = this.state.timer.currentTimer;
     return (
       <View style={styles.user}>
         <View style={styles.details}>

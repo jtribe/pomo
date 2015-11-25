@@ -41,9 +41,17 @@ export default class PomoTimer {
 }
 PomoTimer.defaultRestDuration = 300000;
 
-// delegate a number of properties to the currentTimer object
+// delegate a number of methods to the timer object
 for (let prop of ['start', 'stop', 'reset']) {
   PomoTimer.prototype[prop] = function() {
     return this.timer[prop].apply(this.timer, arguments);
   };
+}
+// delegate a number of properties to the timer object
+for (let prop of ['isRunning']) {
+  Object.defineProperty(PomoTimer.prototype, prop, {
+    get() {
+      return this.currentTimer[prop];
+    }
+  });
 }

@@ -6,19 +6,19 @@ export default class Timer {
     this.duration = Timer.defaultDuration;
     this.isRunning = false;
     this.lastStarted = null;
-    this.stoppedAt = null;
+    this.lastElapsed = 0;
     Object.assign(this, props || {});
   }
   get elapsed() {
     if (!this.isRunning || this.lastStarted == null) {
-      return this.stoppedAtTime || 0;
+      return this.lastElapsed;
     }
     else {
-      return this.stoppedAtTime + Date.now() - this.lastStarted.getTime();
+      return Date.now() - this.lastStarted.getTime() + this.lastElapsed;
     }
   }
   set elapsed(millis) {
-    this.stoppedAt = new Date(millis);
+    this.lastElapsed = millis;
     if (this.isRunning) {
       this.lastStarted = new Date();
     }
@@ -39,9 +39,6 @@ export default class Timer {
   get isFinished() {
     return this.remaining <= 0;
   }
-  get stoppedAtTime() {
-    return this.stoppedAt ? this.stoppedAt.getTime() : null;
-  }
   start(reset = false) {
     if (reset) {
       this.reset();
@@ -56,16 +53,14 @@ export default class Timer {
       this.reset();
     }
     else if (this.lastStarted) {
-      this.stoppedAt = new Date(
-        this.stoppedAtTime + Date.now() - this.lastStarted.getTime()
-      );
+      this.lastElapsed += Date.now() - this.lastStarted.getTime();
     }
     this.lastStarted = null;
     this.isRunning = false;
   }
   reset() {
     this.stop();
-    this.stoppedAt = null;
+    this.lastElapsed = 0;
   }
 }
 
