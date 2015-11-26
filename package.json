@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "art": "^0.10.0",
+    "firebase": "^2.3.2",
     "react-native": "^0.14.2",
     "react-timer-mixin": "^0.13.3",
-    "rx": "^4.0.7"
+    "rx": "^4.0.7",
+    "uuid": "^2.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^4.1.5",

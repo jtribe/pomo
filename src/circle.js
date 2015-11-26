@@ -1,6 +1,7 @@
 import React from 'react-native';
 import ReactART from 'ReactNativeART';
 import TimerMixin from 'react-timer-mixin';
+import PomoTimer from './models/pomo-timer';
 import {
   TimerToggle
 } from './mixins';
@@ -20,8 +21,7 @@ export default React.createClass({
     let radius = 100;
     return {
       strokeWidth: 2,
-      radius: radius,
-      timer: null
+      radius: radius
     }
   },
   componentWillMount() {
@@ -30,19 +30,24 @@ export default React.createClass({
       this.requestAnimationFrame(tick);
     };
     tick();
-    this.props.timer.timer.elapsed = this.props.timer.pomoDuration;
-    this.setState({timer: this.props.timer});
   },
   render() {
     let state = this.state;
-    let timer = state.timer.currentTimer;
-    let progress = timer.elapsed / timer.duration;
-    let radius = state.radius - this.state.strokeWidth;
+    let radius = state.radius - state.strokeWidth;
     let diameter = state.radius * 2;
     let center = {x: state.radius, y: state.radius};
     let circlePath = circle(center, radius);
-    let arcPath = arc(center, radius, 0, progress * 360);
-    let arcColor = state.timer.isResting ? '#9E9E9E' : '#FFEB3B';
+    var text = 'Loading...';
+    var arcPath, arcColor;
+
+    if (this.props.user) {
+      let pomo = new PomoTimer(this.props.user.pomo);
+      let timer = pomo.currentTimer;
+      let progress = timer.elapsed / timer.duration;
+      arcPath = arc(center, radius, 0, progress * 360);
+      arcColor = pomo.isResting ? '#9E9E9E' : '#FFEB3B';
+      text = timer.minutesSeconds;
+    }
 
     return (
       <View style={styles.view}>
@@ -53,7 +58,7 @@ export default React.createClass({
               <Shape d={arcPath} stroke={arcColor} strokeWidth={state.strokeWidth} />
             </Surface>
             <Text height="100%" style={styles.text}>
-              {timer.minutesSeconds}
+              {text}
             </Text>
           </View>
         </TouchableHighlight>

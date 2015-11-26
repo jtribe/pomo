@@ -1,11 +1,11 @@
 import React from 'react-native';
-import PomoTimer from './models/pomo-timer';
 import TimerMixin from 'react-timer-mixin';
 import Circle from './circle';
 import {
   TimerToggle
 } from './mixins';
 import props from './props';
+import Services from './services';
 
 let {
   StyleSheet,
@@ -17,23 +17,28 @@ let {
 } = React;
 
 exports.App = class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {user: null};
+  }
   componentWillMount() {
-    this.setState(props);
+    Services.get('currentUser').on('value',
+      user => this.setState({user})
+    );
+  }
+  render() {
+    return <Circle user={this.state.user} />;
   }
   //render() {
-  //  var timer = new PomoTimer({
-  //    duration: 6000,
-  //    restDuration: 2000,
-  //  });
-  //  timer.start();
-  //  return <Circle timer={timer} />;
+  //  return <Room room={this.state.room} users={this.state.users} />;
   //}
-  render() {
-    return <Room room={this.state.room} users={this.state.users} />;
-  }
 };
 
-class Room extends React.Component {
+let Room = React.createClass({
+  mixins: [TimerMixin],
+  componentWillMount() {
+    this.setInterval(() => this.forceUpdate(), 1000);
+  },
   render() {
     let users = this.props.users.map(
       user => <User user={user} key={user.id} />
@@ -47,22 +52,15 @@ class Room extends React.Component {
       </View>
     )
   }
-}
+});
 
 let User = React.createClass({
-  mixins: [TimerMixin, TimerToggle],
+  mixins: [TimerToggle],
   componentWillMount() {
-    this.setState({timer: new PomoTimer(this.props.user.timer)});
-    this.setInterval(() => this.tick(), 1000);
-  },
-  tick() {
-    if (this.state.isFinished) {
-      this.state.timer.stop();
-    }
-    this.forceUpdate()
+    this.setProps({pomo: new PomoTimer(this.props.user.pomo)});
   },
   render() {
-    var timer = this.state.timer.currentTimer;
+    var timer = this.props.pomo.currentTimer;
     return (
       <View style={styles.user}>
         <View style={styles.details}>

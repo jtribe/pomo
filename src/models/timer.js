@@ -2,12 +2,20 @@ import util from 'util';
 
 export default class Timer {
 
-  constructor(props = null) {
-    this.duration = Timer.defaultDuration;
+  constructor(duration, props = null) {
+    this.duration = duration;
     this.isRunning = false;
     this.lastStarted = null;
     this.lastElapsed = 0;
-    Object.assign(this, props || {});
+    props = props || {};
+    if (props.lastStarted) props.lastStarted = new Date(props.lastStarted);
+    Object.assign(this, props);
+  }
+  get state() {
+    return ['duration', 'isRunning', 'lastStarted', 'lastElapsed'].reduce((state, prop) => {
+      state[prop] = this[prop] instanceof Date ? this[prop].toISOString() : this[prop];
+      return state;
+    }, {});
   }
   get elapsed() {
     if (!this.isRunning || this.lastStarted == null) {
@@ -63,8 +71,6 @@ export default class Timer {
     this.lastElapsed = 0;
   }
 }
-
-Timer.defaultDuration = 25 * 60000;
 
 function pad(str, width, padStr = 0) {
   str = String(str);
