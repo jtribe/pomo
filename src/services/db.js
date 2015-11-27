@@ -4,7 +4,7 @@ export default class Db {
   constructor() {
     this.db = new Firebase('https://intense-heat-8721.firebaseio.com/');
   }
-  get(key) {
+  ref(key) {
     return this.db.child(key);
   }
   set(key, doc) {

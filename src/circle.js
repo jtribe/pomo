@@ -37,11 +37,12 @@ export default React.createClass({
     let diameter = state.radius * 2;
     let center = {x: state.radius, y: state.radius};
     let circlePath = circle(center, radius);
-    var text = 'Loading...';
+    var text = '';
     var arcPath, arcColor;
+    var pomo;
 
     if (this.props.user) {
-      let pomo = new PomoTimer(this.props.user.pomo);
+      pomo = new PomoTimer(this.props.user.pomo);
       let timer = pomo.currentTimer;
       let progress = timer.elapsed / timer.duration;
       arcPath = arc(center, radius, 0, progress * 360);
@@ -51,7 +52,7 @@ export default React.createClass({
 
     return (
       <View style={styles.view}>
-        <TouchableHighlight onPress={() => this.toggleTimer()}>
+        <TouchableHighlight onPress={() => this.toggleTimer(pomo)}>
           <View style={[{width: diameter}, styles.timer]}>
             <Surface width={diameter} height={diameter} style={styles.circle}>
               <Shape d={circlePath} stroke="#666" strokeWidth={state.strokeWidth} />

@@ -1,6 +1,7 @@
 import React from 'react-native';
 import TimerMixin from 'react-timer-mixin';
 import Circle from './circle';
+import Teams from './teams';
 import {
   TimerToggle
 } from './mixins';
@@ -20,18 +21,26 @@ exports.App = class App extends React.Component {
   constructor() {
     super();
     this.state = {user: null};
+    this.currentUser = Services.get('currentUser');
   }
   componentWillMount() {
-    Services.get('currentUser').on('value',
-      user => this.setState({user})
-    );
+    this.currentUser.on('value', user => this.currentUserChanged(user));
+  }
+  currentUserChanged(user) {
+    this.setState({user});
   }
   render() {
     return <Circle user={this.state.user} />;
+
+    //let room = Services.get('store').ref('room', 'jtribe');
+    //return <Room room={room} />;
+
+    //if (!this.currentUser.ref) return <View />;
+    //return <Teams userRef={this.currentUser.ref} />;
   }
-  //render() {
-  //  return <Room room={this.state.room} users={this.state.users} />;
-  //}
+  componentWillUnmount() {
+    this.currentUser.off('value', this.currentUserChanged);
+  }
 };
 
 let Room = React.createClass({
@@ -60,12 +69,13 @@ let User = React.createClass({
     this.setProps({pomo: new PomoTimer(this.props.user.pomo)});
   },
   render() {
-    var timer = this.props.pomo.currentTimer;
+    var pomo = this.props.pomo;
+    var timer = pomo.currentTimer;
     return (
       <View style={styles.user}>
         <View style={styles.details}>
           <Text>{this.props.user.name}</Text>
-          <TouchableHighlight onPress={() => this.toggleTimer()}>
+          <TouchableHighlight onPress={() => this.toggleTimer(pomo)}>
             <Text>{timer.minutesSeconds}</Text>
           </TouchableHighlight>
         </View>

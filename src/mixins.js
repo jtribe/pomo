@@ -1,10 +1,10 @@
 import Services from './services';
 
 export let TimerToggle = {
-  toggleTimer() {
-    var pomo = this.props.pomo;
+  toggleTimer(pomo) {
+    if (!pomo) return;
     pomo.isRunning ? pomo.stop() : pomo.start();
     this.forceUpdate();
-    return Services.get('currentUser').updatePomo(pomo);
+    return Services.get('currentUser').getRef().then(ref => ref.update({pomo}));
   }
 };

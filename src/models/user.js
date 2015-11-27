@@ -1,9 +1,16 @@
 import PomoTimer from './pomo-timer';
 
-export default class User {
-  constructor(attrs = null) {
-    this.attrs = attrs || {};
+class Model {
+  constructor(snapshot) {
+    this.snapshot = snapshot;
+    this.attrs = snapshot.val();
   }
+  get ref() {
+    return this.snapshot.ref();
+  }
+}
+
+export default class User extends Model {
   get pomo() {
     return new PomoTimer(this.attrs.pomo);
   }

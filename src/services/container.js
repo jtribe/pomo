@@ -14,7 +14,7 @@ export class Container {
     return instance;
   }
   create(name) {
-    if (!this.factories[name]) throw new Exception(`Unknown factory ${name} in call to Container.get`);
+    if (!this.factories[name]) throw new Error(`Unknown factory '${name}' in call to Container.get`);
     let {klass, factory, dependencies} = this.factories[name];
     if (!factory) {
       let injections = dependencies.reduce((accum, dep) => {
