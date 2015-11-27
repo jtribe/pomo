@@ -12,12 +12,17 @@ export default class Store {
   ref(type, id) {
     return this.typeRef(type).child(id);
   }
+  create(type, attrs) {
+    return this.typeRef(type).push(attrs);
+  }
+  findBy(type, child, value) {
+    return this.typeRef(type).orderByChild(child).equalTo(value);
+  }
+  /*
+    These are currently not used
   model(type, snapshot) {
     let klass = this.types[type].klass;
     return new klass(snapshot);
-  }
-  create(type, attrs) {
-    return this.typeRef(type).push(attrs);
   }
   createModel(type, attrs) {
     let ref = this.create(type, attrs);
@@ -25,7 +30,5 @@ export default class Store {
       ref.once('value', snapshot => resolve(this.model(type, snapshot)), reject)
     );
   }
-  findBy(type, child, value) {
-    return this.typeRef(type).orderByChild(child).equalTo(value);
-  }
+   */
 }

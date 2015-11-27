@@ -5,6 +5,7 @@ export default class Teams {
   findOrCreateTeam(attrs) {
     return new Promise((resolve, reject) => {
       var ref = this.store.ref('team', attrs.name);
+      // perform the check for existence and creation in a transaction
       ref.transaction(team => {
           if (!team) { // if the team doesn't exist
             return attrs; // create it

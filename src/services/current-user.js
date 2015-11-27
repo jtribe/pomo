@@ -10,24 +10,27 @@ export default class CurrentUser extends EventEmitter {
   constructor() {
     super();
     this.snapshot = null;
+    // load user from local storage first
+    // this contains their UUID, and also provides a faster load time
     this.local = AsyncStorage.getItem(storageKey)
-      .then(str => JSON.parse(str));
-    this.local.then(attrs => {
-      if (!this.snapshot) {
-        this.emit('value', attrs);
-      }
-    });
+      .then(str => {
+        var attrs = JSON.parse(str);
+        // if we don't already have the response from the server
+        if (!this.snapshot) this.emit('value', attrs);
+        return attrs;
+      });
     this.getRef().then(ref => {
+      // listen to any changes from the server
       ref.on('value', snapshot => {
-        this.emit('value', snapshot.val());
+        // and update local storage
         var attrs = snapshot.val();
         if (attrs) attrs.id = ref.key();
         AsyncStorage.setItem(storageKey, JSON.stringify(attrs));
+        this.emit('value', attrs);
       });
     });
   }
   getRef() {
-    if (this.ref) return Promise.resolve(this.ref);
     return this.getId().then(
       id => this.ref = this.store.ref('user', id)
     );
@@ -42,8 +45,11 @@ export default class CurrentUser extends EventEmitter {
     return AsyncStorage.setItem(storageKey, JSON.stringify({id}))
       .then(() => id);
   }
+  // emits the current user object
+  onValue(cb) {
+    this.addListener('value', cb);
+  }
+  removeValueListener(cb) {
+    this.removeListener('value', cb);
+  }
 }
-Object.assign(CurrentUser.prototype, {
-  on: EventEmitter.prototype.addListener,
-  off: EventEmitter.prototype.removeListener
-});

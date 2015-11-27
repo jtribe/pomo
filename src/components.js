@@ -24,7 +24,7 @@ exports.App = class App extends React.Component {
     this.currentUser = Services.get('currentUser');
   }
   componentWillMount() {
-    this.currentUser.on('value', user => this.currentUserChanged(user));
+    this.currentUser.onValue(user => this.currentUserChanged(user));
   }
   currentUserChanged(user) {
     this.setState({user});
