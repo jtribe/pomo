@@ -1,11 +1,11 @@
 import React from 'react-native';
-import PomoTimer from './models/pomo-timer';
 import TimerMixin from 'react-timer-mixin';
-import Circle from './circle';
+import ReactFireMixin from 'reactfire';
+import Services from '../services';
+import PomoTimer from '../models/pomo-timer';
 import {
   TimerToggle
 } from './mixins';
-import props from './props';
 
 let {
   StyleSheet,
@@ -16,60 +16,54 @@ let {
   TouchableHighlight,
 } = React;
 
-exports.App = class App extends React.Component {
+export default React.createClass({
+  mixins: [TimerMixin, ReactFireMixin],
+  getInitialState() {
+    return {
+      team: {},
+      members: [],
+    };
+  },
   componentWillMount() {
-    this.setState(props);
-  }
-  //render() {
-  //  var timer = new PomoTimer({
-  //    duration: 6000,
-  //    restDuration: 2000,
-  //  });
-  //  timer.start();
-  //  return <Circle timer={timer} />;
-  //}
+    this.store = Services.get('store');
+    this.setInterval(() => this.forceUpdate(), 1000);
+    this.bindAsObject(this.props.teamRef, 'team');
+    this.bindAsArray(this.props.teamRef.child('members'), 'members');
+  },
   render() {
-    return <Room room={this.state.room} users={this.state.users} />;
-  }
-};
-
-class Room extends React.Component {
-  render() {
-    let users = this.props.users.map(
-      user => <User user={user} key={user.id} />
-    );
+    let users = this.state.members.map(member => {
+      let id = member['.key'];
+      return <User userRef={this.store.ref('user', id)} key={id} />;
+    });
     return (
       <View style={styles.container}>
         <Text style={styles.title}>
-          {this.props.room.name}
+          {this.state.team.name}
         </Text>
         {users}
       </View>
     )
   }
-}
+});
 
 let User = React.createClass({
-  mixins: [TimerMixin, TimerToggle],
-  componentWillMount() {
-    this.setState({timer: new PomoTimer(this.props.user.timer)});
-    this.setInterval(() => this.tick(), 1000);
+  mixins: [TimerToggle, ReactFireMixin],
+  getInitialState() {
+    return {
+      user: {}
+    };
   },
-  tick() {
-    if (this.state.isFinished) {
-      this.state.timer.stop();
-    }
-    this.forceUpdate()
+  componentWillMount() {
+    this.bindAsObject(this.props.userRef, 'user');
   },
   render() {
-    var timer = this.state.timer.currentTimer;
+    let pomo = new PomoTimer(this.state.user.pomo);
+    let timer = pomo.currentTimer;
     return (
       <View style={styles.user}>
         <View style={styles.details}>
-          <Text>{this.props.user.name}</Text>
-          <TouchableHighlight onPress={() => this.toggleTimer()}>
-            <Text>{timer.minutesSeconds}</Text>
-          </TouchableHighlight>
+          <Text>{this.state.user.name}</Text>
+          <Text>{timer.minutesSeconds}</Text>
         </View>
         <ProgressIndicator timer={timer} />
       </View>
@@ -96,7 +90,6 @@ let ProgressIndicator = React.createClass({
     );
   }
 });
-
 
 let onePx = 1 / PixelRatio.get();
 let styles = StyleSheet.create({

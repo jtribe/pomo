@@ -3,11 +3,12 @@ import {expect} from 'chai';
 import Rx from 'rx';
 
 var timer;
+let duration = 25 * 60000;
 let delay = 100;
 
 describe('Timer model', () => {
   beforeEach(() => {
-    timer = new Timer();
+    timer = new Timer(duration);
   });
 
   it('is initially stopped', () => {
@@ -77,6 +78,23 @@ describe('Timer model', () => {
       timer.elapsed = millis;
       expect(timer.minutesSeconds).to.equal(checks[millis], `for ${millis}ms`);
     });
+  });
+  it('provides a state object', () => {
+    expect(timer.state).to.deep.equal({
+      duration: duration,
+      isRunning: false,
+      lastStarted: null,
+      lastElapsed: 0
+    });
+    timer.duration = 10000;
+    expect(timer.state.duration).to.equal(timer.duration, 'duration');
+    timer.start();
+    expect(timer.state.isRunning).to.equal(true, 'runnning');
+    expect(timer.state.lastStarted).to.not.equal(null, 'lastStarted');
+    timer.elapsed = 10000;
+    timer.stop();
+    expect(timer.state.isRunning).to.equal(false, 'stopped');
+    expect(timer.state.lastElapsed).to.be.greaterThan(0, 'lastElapsed');
   });
 });
 
