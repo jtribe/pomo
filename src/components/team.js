@@ -1,12 +1,11 @@
 import React from 'react-native';
 import TimerMixin from 'react-timer-mixin';
-import Circle from './circle';
-import Teams from './teams';
+import ReactFireMixin from 'reactfire';
+import Services from '../services';
+import PomoTimer from '../models/pomo-timer';
 import {
   TimerToggle
 } from './mixins';
-import props from './props';
-import Services from './services';
 
 let {
   StyleSheet,
@@ -17,45 +16,29 @@ let {
   TouchableHighlight,
 } = React;
 
-exports.App = class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {user: null};
-    this.currentUser = Services.get('currentUser');
-  }
+export default React.createClass({
+  mixins: [TimerMixin, ReactFireMixin],
+  getInitialState() {
+    return {
+      team: {},
+      members: [],
+    };
+  },
   componentWillMount() {
-    this.currentUser.onValue(user => this.currentUserChanged(user));
-  }
-  currentUserChanged(user) {
-    this.setState({user});
-  }
-  render() {
-    return <Circle user={this.state.user} />;
-
-    //let room = Services.get('store').ref('room', 'jtribe');
-    //return <Room room={room} />;
-
-    //if (!this.currentUser.ref) return <View />;
-    //return <Teams userRef={this.currentUser.ref} />;
-  }
-  componentWillUnmount() {
-    this.currentUser.off('value', this.currentUserChanged);
-  }
-};
-
-let Room = React.createClass({
-  mixins: [TimerMixin],
-  componentWillMount() {
+    this.store = Services.get('store');
     this.setInterval(() => this.forceUpdate(), 1000);
+    this.bindAsObject(this.props.teamRef, 'team');
+    this.bindAsArray(this.props.teamRef.child('members'), 'members');
   },
   render() {
-    let users = this.props.users.map(
-      user => <User user={user} key={user.id} />
-    );
+    let users = this.state.members.map(member => {
+      let id = member['.key'];
+      return <User userRef={this.store.ref('user', id)} key={id} />;
+    });
     return (
       <View style={styles.container}>
         <Text style={styles.title}>
-          {this.props.room.name}
+          {this.state.team.name}
         </Text>
         {users}
       </View>
@@ -64,20 +47,23 @@ let Room = React.createClass({
 });
 
 let User = React.createClass({
-  mixins: [TimerToggle],
+  mixins: [TimerToggle, ReactFireMixin],
+  getInitialState() {
+    return {
+      user: {}
+    };
+  },
   componentWillMount() {
-    this.setProps({pomo: new PomoTimer(this.props.user.pomo)});
+    this.bindAsObject(this.props.userRef, 'user');
   },
   render() {
-    var pomo = this.props.pomo;
-    var timer = pomo.currentTimer;
+    let pomo = new PomoTimer(this.state.user.pomo);
+    let timer = pomo.currentTimer;
     return (
       <View style={styles.user}>
         <View style={styles.details}>
-          <Text>{this.props.user.name}</Text>
-          <TouchableHighlight onPress={() => this.toggleTimer(pomo)}>
-            <Text>{timer.minutesSeconds}</Text>
-          </TouchableHighlight>
+          <Text>{this.state.user.name}</Text>
+          <Text>{timer.minutesSeconds}</Text>
         </View>
         <ProgressIndicator timer={timer} />
       </View>
@@ -104,7 +90,6 @@ let ProgressIndicator = React.createClass({
     );
   }
 });
-
 
 let onePx = 1 / PixelRatio.get();
 let styles = StyleSheet.create({

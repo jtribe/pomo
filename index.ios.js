@@ -5,9 +5,7 @@
 'use strict';
 
 import React from 'react-native';
-import {
-  App
-} from './src/components';
+import App from './src/components/app';
 
 React.AppRegistry.registerComponent('PomoTimer', () => class extends React.Component {
   render() {

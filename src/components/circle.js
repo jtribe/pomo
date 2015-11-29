@@ -1,7 +1,7 @@
 import React from 'react-native';
 import ReactART from 'ReactNativeART';
 import TimerMixin from 'react-timer-mixin';
-import PomoTimer from './models/pomo-timer';
+import PomoTimer from '../models/pomo-timer';
 import {
   TimerToggle
 } from './mixins';

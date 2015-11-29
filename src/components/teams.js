@@ -1,10 +1,10 @@
-import Services from './services';
+import React from 'react-native';
+import Services from '../services';
 import Button from 'react-native-button';
 import ReactFireMixin from 'reactfire';
-import React from 'react-native';
 import {
   handleError
-} from './utils';
+} from '../utils';
 let {
   StyleSheet,
   PropTypes,

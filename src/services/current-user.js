@@ -24,9 +24,14 @@ export default class CurrentUser extends EventEmitter {
       ref.on('value', snapshot => {
         // and update local storage
         var attrs = snapshot.val();
-        if (attrs) attrs.id = ref.key();
-        AsyncStorage.setItem(storageKey, JSON.stringify(attrs));
-        this.emit('value', attrs);
+        if (attrs) {
+          attrs.id = ref.key();
+          AsyncStorage.setItem(storageKey, JSON.stringify(attrs));
+          this.emit('value', attrs);
+        }
+        else {
+          this.local.then(attrs => ref.set(attrs));
+        }
       });
     });
   }
@@ -37,7 +42,7 @@ export default class CurrentUser extends EventEmitter {
   }
   getId(create = true) {
     return this.local.then(
-      attrs => attrs.id || (create ? this.generateId() : null)
+      attrs => (attrs && attrs.id) || (create ? this.generateId() : null)
     );
   }
   generateId() {
