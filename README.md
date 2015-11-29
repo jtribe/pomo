@@ -14,7 +14,7 @@ npm install
 ## Running
 
 ```bash
-npm start
+react-native start
 ```
 
 #### iOS

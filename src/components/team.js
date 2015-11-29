@@ -28,10 +28,9 @@ export default React.createClass({
     this.store = Services.get('store');
     this.setInterval(() => this.forceUpdate(), 1000);
     this.bindAsObject(this.props.teamRef, 'team');
-    this.bindAsArray(this.props.teamRef.child('members'), 'members');
   },
   render() {
-    let users = this.state.members.map(member => {
+    let users = this.state.team.members.map(member => {
       let id = member['.key'];
       return <User userRef={this.store.ref('user', id)} key={id} />;
     });
