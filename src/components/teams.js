@@ -3,6 +3,9 @@ import Services from '../services';
 import Button from 'react-native-button';
 import ReactFireMixin from 'reactfire';
 import inflection from 'inflection';
+import Team from './team';
+import AddTeam from './add-team';
+
 import {
   handleError,
 } from '../utils';
@@ -53,15 +56,36 @@ export default React.createClass({
           renderRow={this.renderRow}
         />
         <View style={styles.footer}>
-          <Button onPress={this.props.addTeam}>Add Team</Button>
+          <Button onPress={this.goToAddTeam}>Add Team</Button>
         </View>
       </View>
     )
   },
   renderRow(teamRef, sectionID, rowID) {
     return (
-      <ListViewItem key={teamRef.key()} teamRef={teamRef}></ListViewItem>
+      <ListViewItem key={teamRef.key()} teamRef={teamRef} onTeamPress={this.goToTeam}></ListViewItem>
     )
+  },
+  goToTeam(teamRef) {
+    this.props.navigator.push({
+      title: teamRef.key(),
+      component: Team,
+      passProps: {
+        teamRef: teamRef
+      },
+    });
+  },
+  goToAddTeam() {
+    this.props.navigator.push({
+      title: 'Add Team',
+      component: AddTeam,
+      passProps: {
+        onComplete: this.onCompleteAddTeam
+      },
+    });
+  },
+  onCompleteAddTeam(teamName) {
+    this.props.navigator.pop();
   },
 });
 
@@ -85,7 +109,7 @@ let ListViewItem = React.createClass({
     let team = this.state.team;
     let numMembers = Object.keys(team.members).length;
     return (
-      <TouchableHighlight onPress={() => this.props.onPress(this.teamRef)} underlayColor='#efefef'>
+      <TouchableHighlight onPress={() => this.props.onTeamPress(this.props.teamRef) } underlayColor='#efefef'>
         <View style={styles.listItem}>
           <View>
             <Text style={styles.name}>{team.name}</Text>
@@ -97,7 +121,7 @@ let ListViewItem = React.createClass({
         </View>
       </TouchableHighlight>
     )
-  }
+  },
 });
 
 let iconSize = 20;
@@ -105,7 +129,6 @@ let styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    marginTop: 20,
   },
   teams: {
     flex: 1,
@@ -135,5 +158,6 @@ let styles = StyleSheet.create({
   footer: {
     alignItems: 'center',
     padding: 10,
+    marginBottom: 20,
   },
 });

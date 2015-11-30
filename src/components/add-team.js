@@ -76,7 +76,7 @@ let styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginTop: 65,
     padding: 10,
   },
   form: {

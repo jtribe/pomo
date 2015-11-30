@@ -20,8 +20,9 @@ export default React.createClass({
   mixins: [TimerMixin, ReactFireMixin],
   getInitialState() {
     return {
-      team: {},
-      members: [],
+      team: {
+        members: [],
+      },
     };
   },
   componentWillMount() {
@@ -30,8 +31,7 @@ export default React.createClass({
     this.bindAsObject(this.props.teamRef, 'team');
   },
   render() {
-    let users = this.state.team.members.map(member => {
-      let id = member['.key'];
+    let users = Object.keys(this.state.team.members).map(id => {
       return <User userRef={this.store.ref('user', id)} key={id} />;
     });
     return (
