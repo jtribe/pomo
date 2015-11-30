@@ -77,7 +77,7 @@ export default React.createClass({
   },
 
   onCompleteAddTeam(teamName) {
-    console.log("Add Team Complete");
+    this.props.navigator.pop();
   },
 });
 
