@@ -7,10 +7,10 @@
 import React from 'react-native';
 import App from './src/components/app';
 let {
-    View,
-    NavigatorIOS,
-    StyleSheet,
-  } = React;
+  View,
+  NavigatorIOS,
+  StyleSheet,
+} = React;
 
 var NavScreen = React.createClass({
   render: function () {

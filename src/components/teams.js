@@ -61,6 +61,20 @@ export default React.createClass({
       </View>
     )
   },
+  renderRow(teamRef, sectionID, rowID) {
+    return (
+      <ListViewItem key={teamRef.key()} teamRef={teamRef} onTeamPress={this.goToTeam}></ListViewItem>
+    )
+  },
+  goToTeam(teamRef) {
+    this.props.navigator.push({
+      title: teamRef.key(),
+      component: Team,
+      passProps: {
+        teamRef: teamRef
+      },
+    });
+  },
   goToAddTeam() {
     this.props.navigator.push({
       title: 'Add Team',
@@ -70,12 +84,6 @@ export default React.createClass({
       },
     });
   },
-  renderRow(teamRef, sectionID, rowID) {
-    return (
-      <ListViewItem key={teamRef.key()} teamRef={teamRef} onPress={this.props.onPress}></ListViewItem>
-    )
-  },
-
   onCompleteAddTeam(teamName) {
     this.props.navigator.pop();
   },
@@ -101,7 +109,7 @@ let ListViewItem = React.createClass({
     let team = this.state.team;
     let numMembers = Object.keys(team.members).length;
     return (
-      <TouchableHighlight onPress={() => this.props.onPress(this.props.teamRef) } underlayColor='#efefef'>
+      <TouchableHighlight onPress={() => this.props.onTeamPress(this.props.teamRef) } underlayColor='#efefef'>
         <View style={styles.listItem}>
           <View>
             <Text style={styles.name}>{team.name}</Text>

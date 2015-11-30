@@ -2,6 +2,8 @@ import React from 'react-native';
 import ReactART from 'ReactNativeART';
 import TimerMixin from 'react-timer-mixin';
 import PomoTimer from '../models/pomo-timer';
+import Teams from './teams';
+import Services from '../services';
 import {
   TimerToggle
 } from './mixins';
@@ -25,11 +27,16 @@ export default React.createClass({
     }
   },
   componentWillMount() {
+    this.currentUser = Services.get('currentUser');
+    this.currentUser.onValue(user => this.setState({user}));
     let tick = () => {
       this.forceUpdate();
       this.requestAnimationFrame(tick);
     };
     tick();
+  },
+  componentWillUnmount() {
+    this.currentUser.off('value', this.currentUserChanged);
   },
   render() {
     let state = this.state;
@@ -41,8 +48,8 @@ export default React.createClass({
     var arcPath, arcColor;
     var pomo;
 
-    if (this.props.user) {
-      pomo = new PomoTimer(this.props.user.pomo);
+    if (this.state.user) {
+      pomo = new PomoTimer(this.state.user.pomo);
       let timer = pomo.currentTimer;
       let progress = timer.elapsed / timer.duration;
       arcPath = arc(center, radius, 0, progress * 360);
@@ -63,11 +70,23 @@ export default React.createClass({
             </Text>
           </View>
         </TouchableHighlight>
-        <TouchableHighlight style={styles.teamsButton} onPress={this.props.onPress}>
+        <TouchableHighlight style={styles.teamsButton} onPress={this.onTeamsPressed}>
           <Text style={styles.teamsButtonText}>Teams</Text>
         </TouchableHighlight>
       </View>
     );
+  },
+  onTeamsPressed() {
+    this.currentUser.getRef().then(userRef =>
+      this.props.navigator.push({
+        title: 'Teams',
+        component: Teams,
+        passProps: {
+          userRef: userRef,
+          navigator: this.props.navigator,
+        },
+      })
+    )
   }
 });
 
