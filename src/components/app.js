@@ -6,7 +6,7 @@ import Team from './team';
 import AddTeam from './add-team';
 import Services from '../services';
 let {
-  View
+  View,
 } = React;
 
 export default React.createClass({
@@ -21,12 +21,19 @@ export default React.createClass({
     this.setState({user});
   },
   render() {
-    //return <Circle user={this.state.user} />;
+    return <Circle user={this.state.user} onPress={ () => {
+        if (!this.currentUser.ref) return <View />;
+        this.props.navigator.push({
+          title: "Teams",
+          component: Teams,
+          passProps: {
+            userRef: this.currentUser.ref,
+            onPress: this.goToTeam,
+          },
+        });
+    }} />;
 
-    //if (!this.currentUser.ref) return <View />;
-    //return <Teams userRef={this.currentUser.ref} />;
-
-    return <AddTeam />;
+    //return <AddTeam />;
 
     //let team = Services.get('store').ref('team', 'jtribe');
     //return <Team teamRef={team} />;
@@ -34,4 +41,15 @@ export default React.createClass({
   componentWillUnmount() {
     this.currentUser.off('value', this.currentUserChanged);
   },
+
+  goToTeam(teamRef) {
+    this.props.navigator.push({
+      title: teamRef.key(),
+      component: Team,
+      passProps: {
+        teamRef: teamRef
+      },
+    });
+  },
+
 });

@@ -63,6 +63,9 @@ export default React.createClass({
             </Text>
           </View>
         </TouchableHighlight>
+        <TouchableHighlight style={styles.teamsButton} onPress={this.props.onPress}>
+          <Text style={styles.teamsButtonText}>Teams</Text>
+        </TouchableHighlight>
       </View>
     );
   }
@@ -70,6 +73,7 @@ export default React.createClass({
 
 let styles = React.StyleSheet.create({
   view: {
+    marginTop: 65,
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'black',
@@ -90,6 +94,21 @@ let styles = React.StyleSheet.create({
     color: '#666',
     margin: 10,
     textAlign: 'center',
+  },
+  teamsButton: {
+    marginRight: 20,
+    marginLeft: 20,
+    marginTop: 50,
+    borderRadius: 10,
+    justifyContent: 'center',
+  },
+  teamsButtonText: {
+    color: 'white',
+    fontSize: 20,
+    paddingTop: 15,
+    paddingBottom: 15,
+    alignSelf: 'flex-end',
+    marginRight: 20,
   },
 });
 
