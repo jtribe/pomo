@@ -1,5 +1,9 @@
 import React from 'react-native';
 
+let {
+    BackAndroid,
+} = React;
+
 export default class Nav {
   init(navigator) {
     this.navigator = navigator;
@@ -19,13 +23,18 @@ export default class Nav {
         component,
         props
       });
+      console.log(this.navigator.getCurrentRoutes());
+      BackAndroid.addEventListener('hardwareBackPress', () => this.pop());
     }
   }
   renderScene(route, navigator) {
     return React.createElement(route.component, route.props);
   }
   pop() {
-    this.navigator.pop();
+    if (this.navigator.getCurrentRoutes().length > 1) {
+      this.navigator.pop();
+      return true;
+    }
   }
   get navigatorProps() {
     return {

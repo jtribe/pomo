@@ -61,7 +61,7 @@ export default class CurrentUser extends EventEmitter {
   onValue(cb) {
     this.addListener('value', cb);
   }
-  removeValueListener(cb) {
-    this.removeListener('value', cb);
+  removeValueListeners() {
+    this.removeAllListeners('value');
   }
 }

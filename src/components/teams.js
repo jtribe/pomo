@@ -20,7 +20,6 @@ let {
   ListView,
   TouchableHighlight,
   Platform,
-  BackAndroid,
 } = React;
 
 export default React.createClass({
@@ -41,9 +40,6 @@ export default React.createClass({
     //  {'.key': 'foo'},
     //  {'.key': 'barbaz'},
     //];
-    BackAndroid.addEventListener('hardwareBackPress', function() {
-      Services.get('nav').pop();
-    });
   },
   dataSource() {
     let ds = new ListView.DataSource({

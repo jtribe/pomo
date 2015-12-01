@@ -23,11 +23,11 @@ export default React.createClass({
   },
   componentWillMount() {
     this.currentUser = Services.get('currentUser');
-    this.currentUser.onValue(user => this.setState({user}));
+    this.currentUser.onValue(user => () => this.setState({user}));
     this.setInterval(this.forceUpdate, 1000);
   },
   componentWillUnmount() {
-    this.currentUser.off('value', this.currentUserChanged);
+    this.currentUser.removeValueListeners();
   },
   render() {
     let state = this.state;

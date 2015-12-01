@@ -17,7 +17,6 @@ let {
   Text,
   TextInput,
   Platform,
-  BackAndroid,
 } = React;
 let Form = tcomb.form.Form;
 
@@ -39,9 +38,6 @@ export default React.createClass({
   },
   componentWillMount() {
     this.setState({value: {user: this.props.user.name}});
-    BackAndroid.addEventListener('hardwareBackPress', function() {
-      Services.get('nav').pop();
-    });
   },
   render() {
     let options = {

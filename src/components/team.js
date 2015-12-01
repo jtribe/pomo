@@ -17,7 +17,6 @@ let {
   PixelRatio,
   TouchableHighlight,
   Platform,
-  BackAndroid,
 } = React;
 
 export default React.createClass({
@@ -36,9 +35,6 @@ export default React.createClass({
     this.store = Services.get('store');
     this.setInterval(() => this.forceUpdate(), 1000);
     this.bindAsObject(this.props.teamRef, 'team');
-    BackAndroid.addEventListener('hardwareBackPress', function() {
-      Services.get('nav').pop();
-    });
   },
   render() {
     let users = Object.keys(this.state.team.members).map(id => {
