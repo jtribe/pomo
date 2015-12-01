@@ -4,6 +4,7 @@ import ReactFireMixin from 'reactfire';
 import Services from '../services';
 import Timer from '../models/timer';
 import PomoTimer from '../models/pomo-timer';
+import ProgressIndicator from './progress-indicator';
 import {
   TimerToggle
 } from './mixins';
@@ -21,7 +22,8 @@ let {
 
 export default React.createClass({
   propTypes: {
-    teamRef: PropTypes.object.isRequired
+    teamRef: PropTypes.object.isRequired,
+    currentUserRef: PropTypes.object.isRequired,
   },
   mixins: [TimerMixin, ReactFireMixin],
   getInitialState() {
@@ -34,13 +36,18 @@ export default React.createClass({
   componentWillMount() {
     this.store = Services.get('store');
     this.setInterval(() => this.forceUpdate(), 1000);
+    if (this.props.team) this.setState({team: this.props.team});
     this.bindAsObject(this.props.teamRef, 'team');
   },
   render() {
-    let users = Object.keys(this.state.team.members).map(id => {
-      let {name} = this.state.team.members[id];
-      return <User name={name} userRef={this.store.ref('user', id)} key={id} />;
-    });
+    let currentUserId = this.props.currentUserRef.key();
+    let users = Object.keys(this.state.team.members)
+      .sort(id => id != currentUserId)
+      .map(id => {
+        let {name} = this.state.team.members[id];
+        let ref = this.store.ref('user', id);
+        return <User name={name} userRef={ref} key={id} isCurrentUser={id === currentUserId}/>;
+      });
     return (
       <View style={styles.container}>
         <Text style={styles.title}>
@@ -72,73 +79,36 @@ let User = React.createClass({
     return (
       <View style={styles.user}>
         <View style={styles.details}>
-          <Text>{this.props.name}</Text>
-          <Text>{timer.minutesSeconds}</Text>
+          <Text style={styles.user}>{this.props.name}</Text>
+          <Text style={styles.minutesSeconds}>{timer.minutesSeconds}</Text>
         </View>
-        <ProgressIndicator timer={timer} />
+        <ProgressIndicator pomo={pomo} />
       </View>
     )
   },
 });
 
-let ProgressIndicator = React.createClass({
-  propTypes: {
-    timer: PropTypes.instanceOf(Timer).isRequired,
-  },
-  mixins: [TimerMixin],
-  componentDidMount() {
-    let tick = () => {
-      this.forceUpdate();
-      this.requestAnimationFrame(tick);
-    };
-    tick();
-  },
-  render() {
-    var {timer} = this.props;
-    let width = Dimensions.get('window').width * (timer.elapsed / timer.duration);
-    return (
-      <View style={styles.outer}>
-        <View style={[styles.inner, timer.isRunning && styles.running, {width: width}]} />
-      </View>
-    );
-  }
-});
-
-let onePx = 1 / PixelRatio.get();
 let styles = StyleSheet.create({
   container: {
     marginTop: Platform.OS === 'ios' ? 30 : 20,
   },
   title: {
     fontWeight: 'bold',
-    fontSize: 20,
     textAlign: 'center',
     margin: 10,
-  },
-  user: {
-    marginBottom: 5,
   },
   details: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'flex-end',
     paddingHorizontal: 5,
-    marginBottom: 5,
+    marginVertical: 10,
   },
-  debug: {
-    borderWidth: 1,
-    borderColor: 'red'
+  user: {
+    fontSize: 20,
   },
-  outer: {
-    borderBottomWidth: onePx,
-    borderColor: '#ccc',
-  },
-  inner: {
-    backgroundColor: '#ccc',
-    height: 2,
-    marginBottom: 0 - onePx,
-  },
-  running: {
-    backgroundColor: 'red',
+  minutesSeconds: {
+    fontSize: 15,
   }
 });

@@ -24,22 +24,19 @@ let {
 
 export default React.createClass({
   propTypes: {
-    userRef: PropTypes.object
+    userRef: PropTypes.object.isRequired,
+    teams: PropTypes.object,
   },
   mixins: [ReactFireMixin],
   getInitialState() {
     return {
-      teams: []
+      teams: null
     };
   },
   componentWillMount() {
     let teams = Services.get('teams');
-    this.bindAsArray(teams.forUser(this.props.userRef), 'teams');
-    //this.state.teams = [
-    //  {'.key': 'jtribe'},
-    //  {'.key': 'foo'},
-    //  {'.key': 'barbaz'},
-    //];
+    if (this.props.teams) this.setState({teams: this.props.teams});
+    this.bindAsArray(this.props.userRef.child('teams'), 'teams');
   },
   dataSource() {
     let ds = new ListView.DataSource({
@@ -50,12 +47,16 @@ export default React.createClass({
     return ds.cloneWithRows(refs);
   },
   render() {
+    let teams = this.state.teams // && false
+        ? <ListView
+            dataSource={this.dataSource()}
+            renderRow={this.renderRow} />
+        : <Text style={styles.loading}>Loading...</Text>;
     return (
       <View style={styles.container}>
-        <ListView style={styles.teams}
-          dataSource={this.dataSource()}
-          renderRow={this.renderRow}
-        />
+        <View style={styles.teams}>
+          {teams}
+        </View>
         <View style={styles.footer}>
           <Button onPress={this.goToAddTeam}>Add Team</Button>
         </View>
@@ -67,8 +68,12 @@ export default React.createClass({
       <ListViewItem key={teamRef.key()} teamRef={teamRef} onTeamPress={this.goToTeam} />
     )
   },
-  goToTeam(teamRef) {
-    Services.get('nav').push(Team, teamRef.key(), { teamRef });
+  goToTeam(teamRef, team) {
+    Services.get('currentUser').ref().then(currentUserRef =>
+      Services.get('nav').push(Team, teamRef.key(), {
+        teamRef, currentUserRef, team
+      })
+    );
   },
   goToAddTeam() {
     let currentUser = Services.get('currentUser');
@@ -88,34 +93,34 @@ let ListViewItem = React.createClass({
   mixins: [ReactFireMixin],
   getInitialState() {
     return {
-      team: {
-        members: []
-      }
+      team: {}
     };
   },
   componentWillMount() {
     this.bindAsObject(this.props.teamRef, 'team');
-    //this.state.team = {
-    //  name: this.props.teamRef.key(),
-    //  members: Array(this.props.teamRef.key().length)
-    //};
   },
   render() {
     let team = this.state.team;
-    let numMembers = Object.keys(team.members).length;
+    let details = 'Loading';
+    let teamName = team.name || this.props.teamRef.key();
+    if (team.members) {
+      let numMembers = Object.keys(team.members).length;
+      details = `${numMembers} ${inflection.inflect('member', numMembers)}`;
+    }
     return (
-      <TouchableHighlight onPress={() => this.props.onTeamPress(this.props.teamRef) } underlayColor='#efefef'>
+      <TouchableHighlight onPress={this.onPress} underlayColor='#efefef'>
         <View style={styles.listItem}>
           <View>
-            <Text style={styles.name}>{team.name}</Text>
-            <Text style={styles.members}>
-              {`${numMembers} ${inflection.inflect('member', numMembers)}`}
-            </Text>
+            <Text style={styles.name}>{teamName}</Text>
+            <Text style={styles.members}>{details}</Text>
           </View>
           <Icon name='ion|chevron-right' color='#ccc' size={iconSize} style={styles.disclosure} />
         </View>
       </TouchableHighlight>
     )
+  },
+  onPress() {
+    this.props.onTeamPress(this.props.teamRef, this.state.team);
   },
 });
 
@@ -127,7 +132,12 @@ let styles = StyleSheet.create({
   },
   teams: {
     flex: 1,
-    marginTop: Platform.OS === 'ios' ? 0 : 56,
+  },
+  loading: {
+    marginTop: 65,
+    padding: 10,
+    color: '#666',
+    fontSize: 15
   },
   listItem: {
     borderBottomWidth: 1 / React.PixelRatio.get(),
@@ -156,6 +166,5 @@ let styles = StyleSheet.create({
   footer: {
     alignItems: 'center',
     padding: 10,
-    marginBottom: 20,
   },
 });

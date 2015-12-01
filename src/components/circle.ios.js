@@ -1,6 +1,7 @@
 import React from 'react-native';
 import ReactART from 'ReactNativeART';
 import TimerMixin from 'react-timer-mixin';
+import styling from '../styling';
 let {
   Surface,
   Shape,
@@ -17,7 +18,7 @@ export default React.createClass({
     tick();
   },
   render() {
-    let strokeWidth = 2;
+    let strokeWidth = 3;
     let radius = this.props.radius;
     let arcRadius = radius - strokeWidth;
     let diameter = radius * 2;
@@ -26,14 +27,12 @@ export default React.createClass({
 
     let timer = this.props.pomo.currentTimer;
     let progress = timer.elapsed / timer.duration;
-    let arcPath = arc(center, arcRadius, 0, progress * 360);
-    let arcColor = this.props.pomo.isRunning
-        ? this.props.pomo.isResting ? '#9E9E9E' : '#FFEB3B'
-        : '#ccc';
+    let arcPath = progress ? arc(center, arcRadius, 0, progress * 360) : '';
+    let arcColor = styling.pomoColor(this.props.pomo);
 
     return (
       <Surface width={diameter} height={diameter} style={styles.circle}>
-        <Shape d={circlePath} stroke="#666" strokeWidth={strokeWidth} />
+        <Shape d={circlePath} stroke="#ccc" strokeWidth={strokeWidth} />
         <Shape d={arcPath} stroke={arcColor} strokeWidth={strokeWidth} />
       </Surface>
     );

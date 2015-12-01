@@ -1,4 +1,6 @@
 import React from 'react-native';
+import Button from 'react-native-button';
+import {Icon} from 'react-native-icons';
 import TimerMixin from 'react-timer-mixin';
 import PomoTimer from '../models/pomo-timer';
 import Circle from './circle';
@@ -23,11 +25,11 @@ export default React.createClass({
   },
   componentWillMount() {
     this.currentUser = Services.get('currentUser');
-    this.currentUser.onValue(user => this.setState({user}));
+    this.currentUser.addListener('value', user => this.setState({user}));
     this.setInterval(this.forceUpdate, 1000);
   },
   componentWillUnmount() {
-    this.currentUser.off('value', this.currentUserChanged);
+    this.currentUser.removeAllListeners('value', this.currentUserChanged);
   },
   render() {
     let state = this.state;
@@ -36,64 +38,73 @@ export default React.createClass({
     let pomo = new PomoTimer(state.user.pomo);
     let timer = pomo.currentTimer;
     let progress = timer.elapsed / timer.duration;
-    let text = timer.minutesSeconds;
-
+    let status = timer.isRunning
+        ? <Text style={styles.text}>{timer.minutesSeconds}</Text>
+        : <Icon name='ion|play' color={textColor} size={iconSize} style={styles.paused} />;
     return (
-      <View style={styles.view}>
-        <TouchableHighlight onPress={() => this.toggleTimer(pomo)}>
-          <View style={[{width: diameter}, styles.timer]}>
-            <Circle radius={this.state.radius} pomo={pomo} />
-            <Text height="100%" style={styles.text}>
-              {text}
-            </Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight style={styles.teamsButton} onPress={this.onTeamsPressed}>
-          <Text style={styles.teamsButtonText}>Teams</Text>
-        </TouchableHighlight>
+      <View style={styles.container}>
+        <View style={styles.center}>
+          <TouchableHighlight
+              activeOpacity={0.5} underlayColor='#fff'
+              onPress={() => this.toggleTimer(pomo)}>
+            <View style={styles.center}>
+              <View style={{width: diameter, height: diameter}}>
+                <Circle radius={this.state.radius} pomo={pomo} />
+                <View style={styles.center}>
+                  {status}
+                </View>
+              </View>
+            </View>
+          </TouchableHighlight>
+        </View>
+        <View style={styles.footer}>
+          <Button style={styles.teamsButton} onPress={this.onTeamsPressed}>Teams</Button>
+        </View>
       </View>
     );
   },
   onTeamsPressed() {
     this.currentUser.ref().then(userRef =>
-      Services.get('nav').push(Teams, 'Teams', {userRef})
+      Services.get('nav').push(Teams, 'Teams', {
+        userRef,
+        teams: this.state.user.teams,
+      })
     )
   }
 });
 
+let iconSize = 30;
+let textColor = '#666';
 let styles = React.StyleSheet.create({
-  view: {
-    marginTop: 56,
+  container: {
+    marginTop: 65,
     flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: 'black',
   },
-  timer: {
+  body: {
+    flex: 1,
+  },
+  center: {
     alignSelf: 'center',
-    width: 200,
-    height: 200,
     flex: 1,
     justifyContent: 'center',
   },
   text: {
     fontSize: 20,
-    color: '#666',
+    color: textColor,
     margin: 10,
     textAlign: 'center',
   },
-  teamsButton: {
-    marginRight: 20,
-    marginLeft: 20,
-    marginTop: 50,
-    borderRadius: 10,
-    justifyContent: 'center',
+  paused: {
+    width: iconSize,
+    height: iconSize,
   },
-  teamsButtonText: {
-    color: 'white',
+  footer: {
+    alignItems: 'center',
+    padding: 10,
+  },
+  teamsButton: {
     fontSize: 20,
-    paddingTop: 15,
-    paddingBottom: 15,
-    alignSelf: 'flex-end',
-    marginRight: 20,
   },
 });

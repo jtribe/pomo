@@ -57,11 +57,4 @@ export default class CurrentUser extends EventEmitter {
   getId(create = true) {
     return this.attrs.then(attrs => attrs.id);
   }
-  // emits the current user object
-  onValue(cb) {
-    this.addListener('value', cb);
-  }
-  removeValueListener(cb) {
-    this.removeListener('value', cb);
-  }
 }
