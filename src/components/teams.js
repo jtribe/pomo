@@ -67,25 +67,19 @@ export default React.createClass({
     )
   },
   goToTeam(teamRef) {
-    this.props.navigator.push({
-      title: teamRef.key(),
-      component: Team,
-      passProps: {
-        teamRef: teamRef
-      },
-    });
+    Services.get('nav').push(Team, teamRef.key(), { teamRef });
   },
   goToAddTeam() {
-    this.props.navigator.push({
-      title: 'Add Team',
-      component: AddTeam,
-      passProps: {
-        onComplete: this.onCompleteAddTeam
-      },
-    });
+    let currentUser = Services.get('currentUser');
+    currentUser.attrs.then(user =>
+      Services.get('nav').push(AddTeam, 'Add Team', {
+        user,
+        onComplete: this.onAddTeam
+      })
+    );
   },
-  onCompleteAddTeam(teamName) {
-    this.props.navigator.pop();
+  onAddTeam(teamName) {
+    Services.get('nav').pop();
   },
 });
 
