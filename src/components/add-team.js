@@ -13,6 +13,7 @@ import {
 let {
   StyleSheet,
   PropTypes,
+  ScrollView,
   View,
   Text,
   TextInput,
@@ -22,22 +23,25 @@ let Form = tcomb.form.Form;
 
 var Team = tcomb.struct({
   name: tcomb.String,
-  user: tcomb.String,
+  userName: tcomb.String,
 });
 
 export default React.createClass({
+  propTypes: {
+    user: PropTypes.object.isRequired
+  },
   mixins: [ReactFireMixin],
   getInitialState() {
     return {
-      name: '',
-      user: '',
+      value: {},
     };
   },
-  onChange(value) {
-    this.setState({value});
-  },
   componentWillMount() {
-    this.setState({value: {user: this.props.user.name}});
+    this.setState({
+      value: {
+        userName: this.props.user.name
+      }
+    });
   },
   render() {
     let options = {
@@ -45,20 +49,22 @@ export default React.createClass({
         name: {
           label: 'Team Name',
         },
-        user: {
+        userName: {
           label: 'Your Name',
         }
       }
     };
     return (
       <View style={styles.container}>
-        <Form
-          ref="form"
-          value={this.state.value}
-          type={Team}
-          onChange={this.onChange}
-          options={options}
-        />
+        <View style={styles.form}>
+          <Form
+            ref='form'
+            value={this.state.value}
+            type={Team}
+            onChange={this.onChange}
+            options={options}
+          />
+        </View>
         <View style={styles.footer}>
           <Button styles={styles.button} onPress={this.addTeam} underlayColor='#99d9f4'>
             Add Team
@@ -68,14 +74,14 @@ export default React.createClass({
     )
   },
   addTeam() {
-    var attrs = this.refs.form.getValue();
-    if (attrs) {
+    var values = this.refs.form.getValue();
+    if (values) {
       let currentUser = Services.get('currentUser');
       let teams = Services.get('teams');
-      teams.findOrCreateTeam({name: attrs.name})
-        .then(teamRef => teams.join(teamRef, {name: attrs.user}))
+      teams.findOrCreateTeam({name: values.name})
+        .then(teamRef => teams.join(teamRef, {name: values.userName}))
         .then(() => currentUser.ref())
-        .then(userRef => userRef.update({name: attrs.user}))
+        .then(userRef => userRef.update({name: values.userName}))
         .then(() => this.props.onComplete())
         .catch(handleError);
     }
@@ -85,17 +91,13 @@ export default React.createClass({
 let styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
     marginTop: Platform.OS === 'ios' ? 66 : 56,
     padding: 10,
   },
   form: {
-    flex: 1,
   },
   footer: {
-    alignSelf: 'flex-end',
     alignItems: 'center',
-    padding: 10,
   },
   button: {
     height: 36,
@@ -103,9 +105,6 @@ let styles = StyleSheet.create({
     borderColor: '#48BBEC',
     borderWidth: 1,
     borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
   },
 });
 

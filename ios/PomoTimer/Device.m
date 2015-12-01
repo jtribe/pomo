@@ -1,11 +1,3 @@
-//
-//  Device.m
-//  PomoTimer
-//
-//  Created by Simon Wade on 30/11/2015.
-//  Copyright © 2015 Facebook. All rights reserved.
-//
-
 #import "Device.h"
 
 @implementation Device

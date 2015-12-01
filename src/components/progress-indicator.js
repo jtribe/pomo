@@ -44,6 +44,5 @@ let styles = StyleSheet.create({
   },
   inner: {
     height: 2,
-    marginBottom: 0 - onePx,
   },
 });

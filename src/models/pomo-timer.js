@@ -44,6 +44,8 @@ export default class PomoTimer {
 }
 PomoTimer.defaultDuration = 30 * 60000;
 PomoTimer.defaultRestDuration = 5 * 60000;
+//PomoTimer.defaultDuration = 8 * 1000;
+//PomoTimer.defaultRestDuration = 3 * 1000;
 
 // delegate a number of methods to the timer object
 for (let prop of ['start', 'stop', 'reset']) {

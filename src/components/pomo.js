@@ -6,6 +6,7 @@ import PomoTimer from '../models/pomo-timer';
 import Circle from './circle';
 import Teams from './teams';
 import Services from '../services';
+import styling from '../styling';
 import {
   TimerToggle
 } from './mixins';
@@ -25,8 +26,16 @@ export default React.createClass({
   },
   componentWillMount() {
     this.currentUser = Services.get('currentUser');
-    this.currentUser.addListener('value', user => this.setState({user}));
-    this.setInterval(this.forceUpdate, 1000);
+    this.currentUser.addListener('value', user => this.setState({
+      user,
+      pomo: new PomoTimer(user.pomo)
+    }));
+    let tick = () => {
+      this.forceUpdate();
+      let remaining = this.state.pomo && this.state.pomo.currentTimer.remaining;
+      this.setTimeout(tick, remaining ? remaining % 1000 : 1000);
+    };
+    tick();
   },
   componentWillUnmount() {
     this.currentUser.removeAllListeners('value', this.currentUserChanged);
@@ -35,12 +44,13 @@ export default React.createClass({
     let state = this.state;
     let diameter = state.radius * 2;
     let center = {x: state.radius, y: state.radius};
-    let pomo = new PomoTimer(state.user.pomo);
+    let pomo = state.pomo || new PomoTimer();
     let timer = pomo.currentTimer;
     let progress = timer.elapsed / timer.duration;
+    console.log(styling);
     let status = timer.isRunning
         ? <Text style={styles.text}>{timer.minutesSeconds}</Text>
-        : <Icon name='ion|play' color={textColor} size={iconSize} style={styles.paused} />;
+        : <Icon name='ion|play' color={styling.blue} size={iconSize} style={styles.paused} />;
     return (
       <View style={styles.container}>
         <View style={styles.center}>
@@ -99,6 +109,7 @@ let styles = React.StyleSheet.create({
   paused: {
     width: iconSize,
     height: iconSize,
+    marginLeft: 3,
   },
   footer: {
     alignItems: 'center',

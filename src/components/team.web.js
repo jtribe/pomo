@@ -1,4 +1,4 @@
-import React from 'react-native';
+import React from 'react';
 import TimerMixin from 'react-timer-mixin';
 import ReactFireMixin from 'reactfire';
 import Services from '../services';

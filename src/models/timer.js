@@ -22,7 +22,7 @@ export default class Timer {
       return this.lastElapsed;
     }
     else {
-      return Date.now() - this.lastStarted.getTime() + this.lastElapsed;
+      return (Date.now() - this.lastStarted.getTime() + this.lastElapsed);
     }
   }
   set elapsed(millis) {

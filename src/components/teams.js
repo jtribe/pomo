@@ -47,11 +47,17 @@ export default React.createClass({
     return ds.cloneWithRows(refs);
   },
   render() {
-    let teams = this.state.teams // && false
+    let teams;
+    if (this.state.teams) {
+      teams = this.state.teams.length
         ? <ListView
             dataSource={this.dataSource()}
             renderRow={this.renderRow} />
-        : <Text style={styles.loading}>Loading...</Text>;
+        : <Text style={styles.loading}>You are not a member of any teams.</Text>;
+    }
+    else {
+      teams = <Text style={styles.loading}>Loading...</Text>;
+    }
     return (
       <View style={styles.container}>
         <View style={styles.teams}>
