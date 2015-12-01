@@ -16,6 +16,7 @@ let {
   View,
   Text,
   TextInput,
+  Platform,
 } = React;
 let Form = tcomb.form.Form;
 
@@ -85,7 +86,7 @@ let styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-    marginTop: 65,
+    marginTop: Platform.OS === 'ios' ? 66 : 56,
     padding: 10,
   },
   form: {

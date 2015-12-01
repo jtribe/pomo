@@ -63,7 +63,7 @@ export default React.createClass({
 
 let styles = React.StyleSheet.create({
   view: {
-    marginTop: 65,
+    marginTop: 56,
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'black',
