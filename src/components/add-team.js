@@ -21,6 +21,7 @@ let Form = tcomb.form.Form;
 
 var Team = tcomb.struct({
   name: tcomb.String,
+  user: tcomb.String,
 });
 
 export default React.createClass({
@@ -28,19 +29,23 @@ export default React.createClass({
   getInitialState() {
     return {
       name: '',
+      user: '',
     };
   },
   onChange(value) {
     this.setState({value});
   },
   componentWillMount() {
-    this.teams = Services.get('teams');
+    this.setState({value: {user: this.props.user.name}});
   },
   render() {
     let options = {
       fields: {
         name: {
           label: 'Team Name',
+        },
+        user: {
+          label: 'Your Name',
         }
       }
     };
@@ -64,8 +69,12 @@ export default React.createClass({
   addTeam() {
     var attrs = this.refs.form.getValue();
     if (attrs) {
-      this.teams.findOrCreateTeam(attrs)
-        .then(teamRef => this.teams.join(teamRef))
+      let currentUser = Services.get('currentUser');
+      let teams = Services.get('teams');
+      teams.findOrCreateTeam({name: attrs.name})
+        .then(teamRef => teams.join(teamRef, {name: attrs.user}))
+        .then(() => currentUser.ref())
+        .then(userRef => userRef.update({name: attrs.user}))
         .then(() => this.props.onComplete())
         .catch(handleError);
     }

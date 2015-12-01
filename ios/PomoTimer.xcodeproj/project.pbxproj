@@ -25,6 +25,7 @@
 		C43072211C0AA11200D4F222 /* libReactNativeIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C43072201C0AA0F700D4F222 /* libReactNativeIcons.a */; };
 		C43072231C0AA40E00D4F222 /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = C43072221C0AA40E00D4F222 /* FontAwesome.otf */; };
 		C43072481C0ACCBC00D4F222 /* ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C43072471C0ACCBC00D4F222 /* ionicons.ttf */; };
+		C43072641C0BFFB100D4F222 /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = C43072631C0BFFB100D4F222 /* Device.m */; };
 		C4C4949C1BFEF6FF00C9B415 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4C494861BFEC13300C9B415 /* libART.a */; };
 /* End PBXBuildFile section */
 
@@ -148,6 +149,8 @@
 		C43072221C0AA40E00D4F222 /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.otf; path = "../node_modules/react-native-icons/ios/ReactNativeIcons/Libraries/FontAwesomeKit/FontAwesome.otf"; sourceTree = "<group>"; };
 		C43072451C0ACC9200D4F222 /* ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = ionicons.ttf; path = "../../../../Temp/ReactNativeIconsTest/node_modules/react-native-icons/ios/ReactNativeIcons/Libraries/FontAwesomeKit/ionicons.ttf"; sourceTree = "<group>"; };
 		C43072471C0ACCBC00D4F222 /* ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = ionicons.ttf; path = "../node_modules/react-native-icons/ios/ReactNativeIcons/Libraries/FontAwesomeKit/ionicons.ttf"; sourceTree = "<group>"; };
+		C43072631C0BFFB100D4F222 /* Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Device.m; path = PomoTimer/Device.m; sourceTree = "<group>"; };
+		C43072711C0BFFDC00D4F222 /* Device.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Device.h; path = PomoTimer/Device.h; sourceTree = "<group>"; };
 		C4C494811BFEC13300C9B415 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -264,6 +267,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				C43072631C0BFFB100D4F222 /* Device.m */,
+				C43072711C0BFFDC00D4F222 /* Device.h */,
 			);
 			name = PomoTimer;
 			sourceTree = "<group>";
@@ -615,6 +620,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C43072641C0BFFB100D4F222 /* Device.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);

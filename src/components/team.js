@@ -2,12 +2,14 @@ import React from 'react-native';
 import TimerMixin from 'react-timer-mixin';
 import ReactFireMixin from 'reactfire';
 import Services from '../services';
+import Timer from '../models/timer';
 import PomoTimer from '../models/pomo-timer';
 import {
   TimerToggle
 } from './mixins';
 
 let {
+  PropTypes,
   StyleSheet,
   Text,
   View,
@@ -17,6 +19,9 @@ let {
 } = React;
 
 export default React.createClass({
+  propTypes: {
+    teamRef: PropTypes.object.isRequired
+  },
   mixins: [TimerMixin, ReactFireMixin],
   getInitialState() {
     return {
@@ -32,7 +37,8 @@ export default React.createClass({
   },
   render() {
     let users = Object.keys(this.state.team.members).map(id => {
-      return <User userRef={this.store.ref('user', id)} key={id} />;
+      let {name} = this.state.team.members[id];
+      return <User name={name} userRef={this.store.ref('user', id)} key={id} />;
     });
     return (
       <View style={styles.container}>
@@ -46,6 +52,10 @@ export default React.createClass({
 });
 
 let User = React.createClass({
+  propTypes: {
+    userRef: PropTypes.object.isRequired,
+    name: PropTypes.string.isRequired,
+  },
   mixins: [TimerToggle, ReactFireMixin],
   getInitialState() {
     return {
@@ -61,7 +71,7 @@ let User = React.createClass({
     return (
       <View style={styles.user}>
         <View style={styles.details}>
-          <Text>{this.state.user.name}</Text>
+          <Text>{this.props.name}</Text>
           <Text>{timer.minutesSeconds}</Text>
         </View>
         <ProgressIndicator timer={timer} />
@@ -71,6 +81,9 @@ let User = React.createClass({
 });
 
 let ProgressIndicator = React.createClass({
+  propTypes: {
+    timer: PropTypes.instanceOf(Timer).isRequired,
+  },
   mixins: [TimerMixin],
   componentDidMount() {
     let tick = () => {

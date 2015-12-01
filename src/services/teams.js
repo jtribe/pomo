@@ -25,14 +25,17 @@ export default class Teams {
       );
     });
   }
-  join(teamRef) {
-    return this.setIsMember(teamRef, true);
+  join(teamRef, options) {
+    return this.setIsMember(teamRef, true, options);
   }
-  setIsMember(teamRef, bool) {
-    return this.currentUser.getRef().then(userRef =>
+  setIsMember(teamRef, bool, options) {
+    let attrs = {
+      name: options.name
+    };
+    return this.currentUser.ref().then(userRef =>
       // add the user to team/members
       new Promise((resolve, reject) => {
-          teamRef.child(`members/${userRef.key()}`).set(bool || null,
+          teamRef.child(`members/${userRef.key()}`).set(bool ? attrs : null,
             err => err ? reject(err) : resolve()
           )
         })
