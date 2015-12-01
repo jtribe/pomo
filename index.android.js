@@ -5,10 +5,30 @@
 'use strict';
 
 import React from 'react-native';
-import App from './src/components/app';
+import Pomo from './src/components/pomo';
+import Services from './src/services';
 
-React.AppRegistry.registerComponent('PomoTimer', () => class extends React.Component {
-  render() {
-    return <App />;
+let {
+  View,
+  Navigator,
+  StyleSheet,
+} = React;
+
+let NavScreen = React.createClass({
+  render: function () {
+    let nav = Services.get('nav');
+    return (
+      <Navigator
+        style={styles.container}
+        initialRoute={{component: Pomo}}
+      />
+    );
   }
+});
+React.AppRegistry.registerComponent('PomoTimer', () => NavScreen);
+
+var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
 });
