@@ -19,6 +19,7 @@ let {
   Text,
   ListView,
   TouchableHighlight,
+  Platform,
 } = React;
 
 export default React.createClass({
@@ -126,6 +127,7 @@ let styles = StyleSheet.create({
   },
   teams: {
     flex: 1,
+    marginTop: Platform.OS === 'ios' ? 0 : 56,
   },
   listItem: {
     borderBottomWidth: 1 / React.PixelRatio.get(),
@@ -138,10 +140,12 @@ let styles = StyleSheet.create({
   name: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: 'black',
   },
   members: {
     fontSize: 15,
     fontWeight: '100',
+    color: 'black',
   },
   disclosure: {
     width: iconSize,

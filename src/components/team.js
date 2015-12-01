@@ -16,6 +16,7 @@ let {
   Dimensions,
   PixelRatio,
   TouchableHighlight,
+  Platform,
 } = React;
 
 export default React.createClass({
@@ -106,7 +107,7 @@ let ProgressIndicator = React.createClass({
 let onePx = 1 / PixelRatio.get();
 let styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: Platform.OS === 'ios' ? 30 : 20,
   },
   title: {
     fontWeight: 'bold',
