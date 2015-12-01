@@ -5,7 +5,7 @@ export let TimerToggle = {
     if (!pomo) return;
     pomo.isRunning ? pomo.stop() : pomo.start();
     this.forceUpdate();
-    return Services.get('currentUser').getRef().then(
+    return Services.get('currentUser').ref().then(
       ref => ref.update({pomo: pomo.state})
     );
   }

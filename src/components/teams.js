@@ -32,9 +32,8 @@ export default React.createClass({
     };
   },
   componentWillMount() {
-    this.store = Services.get('store');
-    this.teams = Services.get('teams');
-    this.bindAsArray(this.teams.forUser(this.props.userRef), 'teams');
+    let teams = Services.get('teams');
+    this.bindAsArray(teams.forUser(this.props.userRef), 'teams');
     //this.state.teams = [
     //  {'.key': 'jtribe'},
     //  {'.key': 'foo'},
@@ -45,7 +44,8 @@ export default React.createClass({
     let ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
     });
-    let refs = this.state.teams.map(team => this.store.ref('team', team['.key']));
+    let store = Services.get('store');
+    let refs = this.state.teams.map(team => store.ref('team', team['.key']));
     return ds.cloneWithRows(refs);
   },
   render() {
@@ -63,7 +63,7 @@ export default React.createClass({
   },
   renderRow(teamRef, sectionID, rowID) {
     return (
-      <ListViewItem key={teamRef.key()} teamRef={teamRef} onTeamPress={this.goToTeam}></ListViewItem>
+      <ListViewItem key={teamRef.key()} teamRef={teamRef} onTeamPress={this.goToTeam} />
     )
   },
   goToTeam(teamRef) {
