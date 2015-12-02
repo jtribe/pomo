@@ -14,6 +14,7 @@ let {
   TouchableHighlight,
   View,
   Text,
+  Platform,
 } = React;
 
 export default React.createClass({
@@ -47,8 +48,7 @@ export default React.createClass({
     let pomo = state.pomo || new PomoTimer();
     let timer = pomo.currentTimer;
     let progress = timer.elapsed / timer.duration;
-    console.log(styling);
-    let status = timer.isRunning
+    let status = timer.isRunning || (Platform.OS === 'android') // icons not supported on Android (yet)
         ? <Text style={styles.text}>{timer.minutesSeconds}</Text>
         : <Icon name='ion|play' color={styling.blue} size={iconSize} style={styles.paused} />;
     return (
