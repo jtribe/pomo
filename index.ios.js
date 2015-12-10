@@ -11,6 +11,8 @@ let {
   StyleSheet,
 } = React;
 
+Services.get('notification').init();
+
 let NavScreen = React.createClass({
   render: function () {
     let nav = Services.get('nav');

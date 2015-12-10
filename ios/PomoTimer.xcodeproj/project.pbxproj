@@ -23,10 +23,14 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		C43072211C0AA11200D4F222 /* libReactNativeIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C43072201C0AA0F700D4F222 /* libReactNativeIcons.a */; };
-		C43072231C0AA40E00D4F222 /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = C43072221C0AA40E00D4F222 /* FontAwesome.otf */; };
-		C43072481C0ACCBC00D4F222 /* ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C43072471C0ACCBC00D4F222 /* ionicons.ttf */; };
 		C43072641C0BFFB100D4F222 /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = C43072631C0BFFB100D4F222 /* Device.m */; };
 		C4C4949C1BFEF6FF00C9B415 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4C494861BFEC13300C9B415 /* libART.a */; };
+		C4C674DD1C18E56C00159BBF /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C674DC1C18E56C00159BBF /* Notification.swift */; };
+		C4C674ED1C18E6AD00159BBF /* NotificationBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C674EC1C18E6AD00159BBF /* NotificationBridge.m */; };
+		C4E678D31C1806970042D971 /* foundation-icons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C4E678D11C1806970042D971 /* foundation-icons.ttf */; };
+		C4E678D41C1806970042D971 /* ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C4E678D21C1806970042D971 /* ionicons.ttf */; };
+		C4E678DF1C1806F80042D971 /* libRNAudioPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E678DC1C1806E70042D971 /* libRNAudioPlayer.a */; };
+		C4E678E31C1807B40042D971 /* glass.wav in Resources */ = {isa = PBXBuildFile; fileRef = C4E678E21C1807B40042D971 /* glass.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +125,20 @@
 			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
 			remoteInfo = ART;
 		};
+		C4E678DB1C1806E70042D971 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C4E678D61C1806E70042D971 /* RNAudioPlayer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EBE79C421B01EB5A00446766;
+			remoteInfo = RNAudioPlayer;
+		};
+		C4E678DD1C1806E70042D971 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C4E678D61C1806E70042D971 /* RNAudioPlayer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EBE79C4D1B01EB5B00446766;
+			remoteInfo = RNAudioPlayerTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -146,12 +164,16 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		C43072101C0AA0F700D4F222 /* ReactNativeIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeIcons.xcodeproj; path = "../node_modules/react-native-icons/ios/ReactNativeIcons.xcodeproj"; sourceTree = "<group>"; };
-		C43072221C0AA40E00D4F222 /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.otf; path = "../node_modules/react-native-icons/ios/ReactNativeIcons/Libraries/FontAwesomeKit/FontAwesome.otf"; sourceTree = "<group>"; };
-		C43072451C0ACC9200D4F222 /* ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = ionicons.ttf; path = "../../../../Temp/ReactNativeIconsTest/node_modules/react-native-icons/ios/ReactNativeIcons/Libraries/FontAwesomeKit/ionicons.ttf"; sourceTree = "<group>"; };
-		C43072471C0ACCBC00D4F222 /* ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = ionicons.ttf; path = "../node_modules/react-native-icons/ios/ReactNativeIcons/Libraries/FontAwesomeKit/ionicons.ttf"; sourceTree = "<group>"; };
 		C43072631C0BFFB100D4F222 /* Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Device.m; path = PomoTimer/Device.m; sourceTree = "<group>"; };
 		C43072711C0BFFDC00D4F222 /* Device.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Device.h; path = PomoTimer/Device.h; sourceTree = "<group>"; };
 		C4C494811BFEC13300C9B415 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
+		C4C674DB1C18E56B00159BBF /* PomoTimer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PomoTimer-Bridging-Header.h"; sourceTree = "<group>"; };
+		C4C674DC1C18E56C00159BBF /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Notification.swift; path = PomoTimer/Notification.swift; sourceTree = "<group>"; };
+		C4C674EC1C18E6AD00159BBF /* NotificationBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotificationBridge.m; path = PomoTimer/NotificationBridge.m; sourceTree = "<group>"; };
+		C4E678D11C1806970042D971 /* foundation-icons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "foundation-icons.ttf"; path = "../node_modules/react-native-icons/ios/ReactNativeIcons/Libraries/FontAwesomeKit/foundation-icons.ttf"; sourceTree = "<group>"; };
+		C4E678D21C1806970042D971 /* ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = ionicons.ttf; path = "../node_modules/react-native-icons/ios/ReactNativeIcons/Libraries/FontAwesomeKit/ionicons.ttf"; sourceTree = "<group>"; };
+		C4E678D61C1806E70042D971 /* RNAudioPlayer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNAudioPlayer.xcodeproj; path = "../node_modules/react-native-audioplayer/RNAudioPlayer.xcodeproj"; sourceTree = "<group>"; };
+		C4E678E21C1807B40042D971 /* glass.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = glass.wav; path = ../assets/glass.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +188,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4E678DF1C1806F80042D971 /* libRNAudioPlayer.a in Frameworks */,
 				C43072211C0AA11200D4F222 /* libReactNativeIcons.a in Frameworks */,
 				C4C4949C1BFEF6FF00C9B415 /* libART.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -269,6 +292,9 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				C43072631C0BFFB100D4F222 /* Device.m */,
 				C43072711C0BFFDC00D4F222 /* Device.h */,
+				C4C674DC1C18E56C00159BBF /* Notification.swift */,
+				C4C674EC1C18E6AD00159BBF /* NotificationBridge.m */,
+				C4C674DB1C18E56B00159BBF /* PomoTimer-Bridging-Header.h */,
 			);
 			name = PomoTimer;
 			sourceTree = "<group>";
@@ -292,6 +318,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				C4E678D61C1806E70042D971 /* RNAudioPlayer.xcodeproj */,
 				C43072101C0AA0F700D4F222 /* ReactNativeIcons.xcodeproj */,
 				C4C494811BFEC13300C9B415 /* ART.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -319,9 +346,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				C43072471C0ACCBC00D4F222 /* ionicons.ttf */,
-				C43072451C0ACC9200D4F222 /* ionicons.ttf */,
-				C43072221C0AA40E00D4F222 /* FontAwesome.otf */,
+				C4E678D51C1806A60042D971 /* Assets */,
 				13B07FAE1A68108700A75B9A /* PomoTimer */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* PomoTimerTests */,
@@ -352,6 +377,25 @@
 			isa = PBXGroup;
 			children = (
 				C4C494861BFEC13300C9B415 /* libART.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C4E678D51C1806A60042D971 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				C4E678E21C1807B40042D971 /* glass.wav */,
+				C4E678D11C1806970042D971 /* foundation-icons.ttf */,
+				C4E678D21C1806970042D971 /* ionicons.ttf */,
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
+		C4E678D71C1806E70042D971 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C4E678DC1C1806E70042D971 /* libRNAudioPlayer.a */,
+				C4E678DE1C1806E70042D971 /* RNAudioPlayerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -401,6 +445,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
@@ -472,6 +517,10 @@
 				{
 					ProductGroup = C43072111C0AA0F700D4F222 /* Products */;
 					ProjectRef = C43072101C0AA0F700D4F222 /* ReactNativeIcons.xcodeproj */;
+				},
+				{
+					ProductGroup = C4E678D71C1806E70042D971 /* Products */;
+					ProjectRef = C4E678D61C1806E70042D971 /* RNAudioPlayer.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -567,6 +616,20 @@
 			remoteRef = C4C494851BFEC13300C9B415 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		C4E678DC1C1806E70042D971 /* libRNAudioPlayer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNAudioPlayer.a;
+			remoteRef = C4E678DB1C1806E70042D971 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C4E678DE1C1806E70042D971 /* RNAudioPlayerTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RNAudioPlayerTests.xctest;
+			remoteRef = C4E678DD1C1806E70042D971 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -581,9 +644,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C43072481C0ACCBC00D4F222 /* ionicons.ttf in Resources */,
-				C43072231C0AA40E00D4F222 /* FontAwesome.otf in Resources */,
+				C4E678D31C1806970042D971 /* foundation-icons.ttf in Resources */,
+				C4E678D41C1806970042D971 /* ionicons.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				C4E678E31C1807B40042D971 /* glass.wav in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -620,6 +684,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4C674DD1C18E56C00159BBF /* Notification.swift in Sources */,
+				C4C674ED1C18E6AD00159BBF /* NotificationBridge.m in Sources */,
 				C43072641C0BFFB100D4F222 /* Device.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
@@ -690,6 +756,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
@@ -703,6 +770,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = PomoTimer;
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "PomoTimer-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -710,6 +779,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				HEADER_SEARCH_PATHS = (
@@ -722,6 +792,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = PomoTimer;
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "PomoTimer-Bridging-Header.h";
 			};
 			name = Release;
 		};

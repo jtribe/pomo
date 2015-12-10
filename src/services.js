@@ -4,6 +4,7 @@ import Store from './services/store';
 import CurrentUser from './services/current-user';
 import Teams from './services/teams';
 import Nav from './services/nav';
+import Notification from './services/notification';
 
 export class Services extends Container {
   constructor() {
@@ -13,6 +14,7 @@ export class Services extends Container {
     this.define('currentUser', CurrentUser, ['store']);
     this.define('teams', Teams, ['store', 'currentUser']);
     this.define('nav', Nav);
+    this.define('notification', Notification, ['currentUser']);
   }
 }
 
