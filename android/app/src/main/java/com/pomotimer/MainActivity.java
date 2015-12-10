@@ -13,6 +13,8 @@ import com.facebook.soloader.SoLoader;
 
 import com.smixx.reactnativeicons.ReactNativeIcons;
 
+import com.sh3rawi.RNAudioPlayer.RNAudioPlayer;
+
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
 
     private ReactInstanceManager mReactInstanceManager;
@@ -29,6 +31,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .setJSMainModuleName("index.android")
                 .addPackage(new MainReactPackage())
                 .addPackage(new ReactNativeIcons())
+                .addPackage(new RNAudioPlayer())
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();

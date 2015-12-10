@@ -15,6 +15,8 @@ let {
   TouchableHighlight,
 } = React;
 
+Services.get('notification').init();
+
 var NavBarRouteMapper = {
   LeftButton: function(route, navigator, index, navState) {
       if (index > 0) {
@@ -40,7 +42,7 @@ var NavBarRouteMapper = {
     );
   },
 
-}
+};
 
 let NavScreen = React.createClass({
   render: function () {

@@ -5,9 +5,6 @@ import Services from '../services';
 import Timer from '../models/timer';
 import PomoTimer from '../models/pomo-timer';
 import ProgressIndicator from './progress-indicator';
-import {
-  TimerToggle
-} from './mixins';
 
 let {
   PropTypes,
@@ -66,7 +63,7 @@ let User = React.createClass({
     userRef: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
   },
-  mixins: [TimerToggle, ReactFireMixin],
+  mixins: [ReactFireMixin],
   getInitialState() {
     return {
       user: {}

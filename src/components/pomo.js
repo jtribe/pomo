@@ -7,9 +7,6 @@ import Circle from './circle';
 import Teams from './teams';
 import Services from '../services';
 import styling from '../styling';
-import {
-  TimerToggle
-} from './mixins';
 let {
   TouchableHighlight,
   View,
@@ -18,7 +15,7 @@ let {
 } = React;
 
 export default React.createClass({
-  mixins: [TimerMixin, TimerToggle],
+  mixins: [TimerMixin],
   getInitialState() {
     return {
       user: {},
@@ -72,6 +69,22 @@ export default React.createClass({
         </View>
       </View>
     );
+  },
+  toggleTimer(pomo) {
+    if (!pomo) return;
+    pomo.isRunning ? pomo.stop(true) : pomo.start();
+    Services.get('notification').pomoChanged(pomo);
+    this.forceUpdate();
+    return Services.get('currentUser').ref().then(ref => {
+      let pomoState = pomo.isRunning ? pomo.state : null;
+      if (pomoState) {
+        // durations that are not whole number factors of one hour will be weird because of
+        // limitations of UILocalNotification on iOS. Simple solution: don't allow duration to be
+        // changed from the default 30 mins
+        delete pomoState.timer.duration;
+      }
+      ref.update({pomo: pomoState})
+    });
   },
   onTeamsPressed() {
     this.currentUser.ref().then(userRef =>
