@@ -1,0 +1,3 @@
+[submodule "ios/bin"]
+	path = ios/bin
+	url = git@github.com:jtribe/ios-tools.git

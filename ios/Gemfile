@@ -1,0 +1,10 @@
+# A sample Gemfile
+source "https://rubygems.org"
+
+# gem "rails"
+
+gem 'cocoapods', '~> 0.39.0'
+gem 'xcpretty', '~> 0.2.2'
+gem 'gym', '~> 1.5.0'
+gem 'deliver', '~> 1.9.0'
+gem 'match', '~> 0.2.5'
