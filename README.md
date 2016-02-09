@@ -45,3 +45,7 @@ npm test -- -w # or npm test for
 
 - Use Language > JavaScript > Flow
 - Import the inspections config from `config/Project_Default.xml` 
+
+## Distribution
+- The Apple ID armin@jtribe.com.au is used for iTunes Connect
+- This project uses match to manage certs and provisioning profiles, so it should not be necessary to add this account to Xcode
