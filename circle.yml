@@ -15,7 +15,7 @@ dependencies:
 test:
   override:
     - ./ios/bin/execute.sh test
-    - mv build/reports/* $CIRCLE_TEST_REPORTS
+    - mv ./ios/build/reports/* $CIRCLE_TEST_REPORTS
 deployment:
   itunes_connect:
     branch: release
