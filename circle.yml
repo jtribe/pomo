@@ -14,9 +14,8 @@ dependencies:
     - ./ios/bin/execute.sh carthage
 test:
   override:
-    - cd ios
-    - ./bin/execute.sh test
-    - mv build/reports/* $CIRCLE_TEST_REPORTS
+    - ./ios/bin/execute.sh test
+    - mv ./ios/build/reports/* $CIRCLE_TEST_REPORTS
 deployment:
   itunes_connect:
     branch: release
