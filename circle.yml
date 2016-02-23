@@ -1,21 +1,24 @@
 machine:
   xcode:
     version: '7.2'
-  # ruby:
-  #   version: 2.2.4
 checkout:
   post:
     - git submodule update --init
 dependencies:
   # we override dependencies because CircleCI doesn't use `bundle exec` when calling `pod install`
   override:
+    - npm install
     - cd ios && bundle install
     - ./ios/bin/execute.sh pods
     - ./ios/bin/execute.sh carthage
+  cache_directories:
+    - node_modules/
 test:
   override:
-    - ./ios/bin/execute.sh test
-    - mv ./ios/build/reports/* $CIRCLE_TEST_REPORTS
+    # - ./ios/bin/execute.sh test
+    # - mv ./ios/build/reports/* $CIRCLE_TEST_REPORTS
+    # - npm test
+    - echo "No tests"
 deployment:
   itunes_connect:
     branch: release
