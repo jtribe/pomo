@@ -48,16 +48,17 @@ PomoTimer.defaultRestDuration = 5 * 60000;
 //PomoTimer.defaultRestDuration = 2 * 1000;
 
 // delegate a number of methods to the timer object
-for (let prop of ['start', 'stop', 'reset']) {
+['start', 'stop', 'reset'].map(prop => {
   PomoTimer.prototype[prop] = function() {
     return this.timer[prop].apply(this.timer, arguments);
   };
-}
+});
+
 // delegate a number of properties to the timer object
-for (let prop of ['isRunning']) {
+['isRunning'].map(prop => {
   Object.defineProperty(PomoTimer.prototype, prop, {
     get() {
       return this.currentTimer[prop];
     }
   });
-}
+});
